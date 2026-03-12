@@ -192,9 +192,24 @@ export default function ServicesSection() {
   const [expandedServiceId, setExpandedServiceId] = useState<string | null>(null)
   const expandedContainerRef = useRef<HTMLDivElement>(null)
   const servicesSectionRef = useRef<HTMLElement>(null)
-  const [isMobile, setIsMobile] = useState(false)
   const [isWideDesktop, setIsWideDesktop] = useState(false)
-  const expandedSectionHeight = "clamp(40rem, 84vh, 58rem)"
+  const [deviceCategory, setDeviceCategory] = useState<
+    "mobile" | "tablet" | "smallLaptop" | "laptop" | "desktop" | "wideDesktop"
+  >("desktop")
+  const isMobile = deviceCategory === "mobile"
+  const isCompactLaptop = deviceCategory === "laptop"
+  const expandedSectionHeight = isCompactLaptop
+    ? "clamp(25rem, 52vh, 34rem)"
+    : "clamp(40rem, 84vh, 58rem)"
+  const servicesHeadingClass = isCompactLaptop
+    ? "mb-4 text-3xl font-bold sm:text-5xl lg:text-6xl xl:text-7xl"
+    : "mb-4 text-3xl font-bold sm:text-5xl lg:text-7xl xl:text-9xl"
+  const desktopCardGridClass =
+    deviceCategory === "tablet"
+      ? "grid grid-cols-2 gap-6"
+      : deviceCategory === "smallLaptop" || deviceCategory === "laptop"
+        ? "grid grid-cols-3 gap-6"
+        : "grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-6"
 
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
@@ -213,35 +228,85 @@ export default function ServicesSection() {
     }
   }, [expandedServiceId])
 
+  const selectedService = services.find((service) => service.id === expandedServiceId)
+
   useEffect(() => {
     if (typeof window === "undefined") return
 
+    // Separate media queries for each device category
     const mobileMediaQuery = window.matchMedia("(max-width: 767px)")
-    const wideDesktopMediaQuery = window.matchMedia("(min-width: 1280px)")
+    const tabletMediaQuery = window.matchMedia("(min-width: 768px) and (max-width: 1023px)")
+    const smallLaptopMediaQuery = window.matchMedia("(min-width: 1024px) and (max-width: 1239px)")
+    const laptopMediaQuery = window.matchMedia("(min-width: 1240px) and (max-width: 1490px)")
+    const desktopMediaQuery = window.matchMedia("(min-width: 1491px) and (max-width: 1919px)")
+    const largeDesktopMediaQuery = window.matchMedia("(min-width: 1920px)")
+    const wideLayoutMediaQuery = window.matchMedia("(min-width: 1280px)")
+
     const handleChange = () => {
       const mobile = mobileMediaQuery.matches
-      setIsMobile(mobile)
-      setIsWideDesktop(wideDesktopMediaQuery.matches)
+      if (mobile) {
+        setDeviceCategory("mobile")
+      } else if (tabletMediaQuery.matches) {
+        setDeviceCategory("tablet")
+      } else if (smallLaptopMediaQuery.matches) {
+        setDeviceCategory("smallLaptop")
+      } else if (laptopMediaQuery.matches) {
+        setDeviceCategory("laptop")
+      } else if (desktopMediaQuery.matches) {
+        setDeviceCategory("desktop")
+      } else if (largeDesktopMediaQuery.matches) {
+        setDeviceCategory("wideDesktop")
+      }
+
+      setIsWideDesktop(wideLayoutMediaQuery.matches)
       if (mobile) {
         setExpandedServiceId(null)
       }
     }
 
     handleChange()
-    if (mobileMediaQuery.addEventListener && wideDesktopMediaQuery.addEventListener) {
+    if (
+      mobileMediaQuery.addEventListener &&
+      tabletMediaQuery.addEventListener &&
+      smallLaptopMediaQuery.addEventListener &&
+      laptopMediaQuery.addEventListener &&
+      desktopMediaQuery.addEventListener &&
+      largeDesktopMediaQuery.addEventListener &&
+      wideLayoutMediaQuery.addEventListener
+    ) {
       mobileMediaQuery.addEventListener("change", handleChange)
-      wideDesktopMediaQuery.addEventListener("change", handleChange)
+      tabletMediaQuery.addEventListener("change", handleChange)
+      smallLaptopMediaQuery.addEventListener("change", handleChange)
+      laptopMediaQuery.addEventListener("change", handleChange)
+      desktopMediaQuery.addEventListener("change", handleChange)
+      largeDesktopMediaQuery.addEventListener("change", handleChange)
+      wideLayoutMediaQuery.addEventListener("change", handleChange)
       return () => {
         mobileMediaQuery.removeEventListener("change", handleChange)
-        wideDesktopMediaQuery.removeEventListener("change", handleChange)
+        tabletMediaQuery.removeEventListener("change", handleChange)
+        smallLaptopMediaQuery.removeEventListener("change", handleChange)
+        laptopMediaQuery.removeEventListener("change", handleChange)
+        desktopMediaQuery.removeEventListener("change", handleChange)
+        largeDesktopMediaQuery.removeEventListener("change", handleChange)
+        wideLayoutMediaQuery.removeEventListener("change", handleChange)
       }
     }
 
     mobileMediaQuery.addListener(handleChange)
-    wideDesktopMediaQuery.addListener(handleChange)
+    tabletMediaQuery.addListener(handleChange)
+    smallLaptopMediaQuery.addListener(handleChange)
+    laptopMediaQuery.addListener(handleChange)
+    desktopMediaQuery.addListener(handleChange)
+    largeDesktopMediaQuery.addListener(handleChange)
+    wideLayoutMediaQuery.addListener(handleChange)
     return () => {
       mobileMediaQuery.removeListener(handleChange)
-      wideDesktopMediaQuery.removeListener(handleChange)
+      tabletMediaQuery.removeListener(handleChange)
+      smallLaptopMediaQuery.removeListener(handleChange)
+      laptopMediaQuery.removeListener(handleChange)
+      desktopMediaQuery.removeListener(handleChange)
+      largeDesktopMediaQuery.removeListener(handleChange)
+      wideLayoutMediaQuery.removeListener(handleChange)
     }
   }, [])
 
@@ -273,7 +338,7 @@ export default function ServicesSection() {
     >
       {!expandedServiceId && (
         <div className="text-center mb-12">
-          <h2 className="text-3xl sm:text-5xl lg:text-7xl xl:text-9xl font-bold mb-4">
+          <h2 className={servicesHeadingClass}>
             Our Services
           </h2>
         </div>
@@ -281,36 +346,49 @@ export default function ServicesSection() {
 
       <div className="max-w-[1960px] mx-auto px-5 sm:px-6 md:px-10 ">
         {isMobile ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-6">
-            {services.map((service) => (
-              <div
-                key={service.id}
-                className="group bg-white/5 backdrop-blur-xl border border-white/10 p-6 rounded-2xl transition-all flex flex-col"
-              >
-                <div>
-                  <p className="text-xs font-bold text-blue-400 mb-2">
+          selectedService ? (
+            <div ref={expandedContainerRef} className="mx-auto max-w-4xl">
+              <ServiceExpandPanel
+                index={services.findIndex((service) => service.id === selectedService.id)}
+                service={selectedService}
+                isExpanded
+                mobile
+                onExpand={() => setExpandedServiceId(selectedService.id)}
+                onClose={() => setExpandedServiceId(null)}
+              />
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+              {services.map((service) => (
+                <button
+                  key={service.id}
+                  type="button"
+                  onClick={() => setExpandedServiceId(service.id)}
+                  className="group rounded-2xl border border-white/10 bg-white/5 p-6 text-left backdrop-blur-xl transition-all hover:border-blue-400/60 hover:shadow-xl hover:shadow-blue-500/20"
+                >
+                  <p className="mb-2 text-xs font-bold text-blue-400">
                     {service.label}
                   </p>
 
-                  <h3 className="text-lg font-bold mb-3 leading-snug">
+                  <h3 className="mb-3 text-lg font-bold leading-snug">
                     {service.subtitle}
                   </h3>
 
-                  <p className="text-sm text-white/60 leading-relaxed italic">
-                    &quot;{service.description.substring(0, 80)}...&quot;
+                  <p className="text-sm italic leading-relaxed text-white/60">
+                    &quot;{service.description.substring(0, 90)}...&quot;
                   </p>
-                </div>
 
-                <span className="mt-auto pt-6 text-blue-400 font-semibold inline-flex items-center gap-1 relative self-start">
-                  Get Started
-                  <span className="transition-transform duration-300 group-hover:translate-x-2">
-                    -&gt;
+                  <span className="relative mt-6 inline-flex items-center gap-1 self-start pt-6 font-semibold text-blue-400">
+                    Get Started
+                    <span className="transition-transform duration-300 group-hover:translate-x-2">
+                      -&gt;
+                    </span>
+                    <span className="absolute bottom-0 left-0 h-[2px] w-0 bg-blue-400 transition-all duration-300 group-hover:w-full" />
                   </span>
-                  <span className="absolute left-0 -bottom-1 h-[2px] w-0 bg-blue-400 transition-all duration-300 group-hover:w-full" />
-                </span>
-              </div>
-            ))}
-          </div>
+                </button>
+              ))}
+            </div>
+          )
         ) : expandedServiceId ? (
           <div
             ref={expandedContainerRef}
@@ -326,13 +404,14 @@ export default function ServicesSection() {
                 index={index}
                 service={service}
                 isExpanded={expandedServiceId === service.id}
+                compactLaptop={isCompactLaptop}
                 onExpand={() => setExpandedServiceId(service.id)}
                 onClose={() => setExpandedServiceId(null)}
               />
             ))}
           </div>
         ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-6">
+          <div className={desktopCardGridClass}>
             {services.map((service) => (
               <div
                 key={service.id}

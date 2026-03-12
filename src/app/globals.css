@@ -114,10 +114,8 @@
 }
 
 @theme inline {
-  --font-sans: var(--font-poppins), "Poppins", ui-sans-serif, system-ui,
-    -apple-system, "Segoe UI", sans-serif;
-  --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
-    "Liberation Mono", "Courier New", monospace;
+  --font-sans: "Geist", "Geist Fallback";
+  --font-mono: "Geist Mono", "Geist Mono Fallback";
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-card: var(--card);
@@ -165,6 +163,19 @@
   }
   body {
     @apply bg-background text-foreground;
+  }
+  a[href],
+  button,
+  [role="button"],
+  input[type="button"],
+  input[type="submit"],
+  input[type="reset"] {
+    cursor: pointer;
+  }
+  button:disabled,
+  input:disabled,
+  [aria-disabled="true"] {
+    cursor: not-allowed;
   }
 }
 
@@ -357,4 +368,9 @@
   animation: fadeIn 0.35s ease forwards;
 }
  
- 
+/* Laptop-wide typography scaling across the full app */
+@media (min-width: 1240px) and (max-width: 1490px) {
+  html {
+    font-size: 93.75%;
+  }
+}

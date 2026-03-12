@@ -2,7 +2,7 @@ import type React from "react"
 import type { Metadata } from "next"
 import "./globals.css"
 import { Poppins } from "next/font/google"
-
+import { Analytics } from "@vercel/analytics/next"
 const poppins = Poppins({
   subsets: ["latin"],
   weight: ["300", "400", "500", "600", "700"],
@@ -33,7 +33,7 @@ export default function RootLayout({
       <body className={`${poppins.className} antialiased`}>
 
         {children}
-
+<Analytics />
       </body>
     </html>
   )

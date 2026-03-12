@@ -577,7 +577,6 @@ import { useState, useEffect, useRef } from "react"
 import {motion } from "framer-motion"
 import { ClientLogin } from "@/components/clientloginform"
 import Image from "next/image"
-import { useRouter } from "next/navigation"
 import { BorderBeam } from "@/components/ui/border-beam"
 import type { Service } from "@/lib/service-types"
 
@@ -589,6 +588,7 @@ interface ServiceExpandPanelProps {
   onClose: () => void
   index: number          
   mobile?: boolean
+  compactLaptop?: boolean
 }
 
 /* ================= GRID UTILS ================= */
@@ -690,11 +690,13 @@ export default function ServiceExpandPanel({
   onClose,
   index,
   mobile = false,
+  compactLaptop = false,
 }: ServiceExpandPanelProps) {
-  const expandedPanelHeight = "clamp(34rem, 72vh, 52rem)"
+  const expandedPanelHeight = compactLaptop
+    ? "clamp(25rem, 50vh, 33rem)"
+    : "clamp(34rem, 72vh, 52rem)"
   const collapsedRailWidth = "clamp(3.5rem, 4vw, 4.5rem)"
   const [showLogin, setShowLogin] = useState(false)
-  const router = useRouter()
   const panelRef = useRef<HTMLDivElement>(null)
   const [gridCells, setGridCells] = useState<GridCell[]>(generateGrid())
   const [selectedFeatureIndex, setSelectedFeatureIndex] = useState(0)
@@ -713,6 +715,15 @@ export default function ServiceExpandPanel({
     email: "",
     phone: "",
   })
+  const detailHeadingClass = compactLaptop
+    ? "mb-2 text-xl font-bold md:text-2xl"
+    : "mb-2 text-2xl font-bold md:text-3xl"
+  const serviceHeadingClass = compactLaptop
+    ? "mb-4 text-xl font-bold md:text-2xl"
+    : "mb-4 text-2xl font-bold md:text-3xl"
+  const featureTitleClass = compactLaptop
+    ? "text-xs text-white/90 font-semibold"
+    : "text-sm text-white/90 font-semibold"
 
   const handleSend = () => {
     if (!input.trim()) return
@@ -839,7 +850,7 @@ const handleFormSubmit = () => {
         ref={panelRef}
         style={{
           flex: mobile ? undefined : isExpanded ? "3 1 0%" : `0 0 ${collapsedRailWidth}`,
-          minHeight: isExpanded ? expandedPanelHeight : undefined,
+          minHeight: isExpanded && !mobile ? expandedPanelHeight : undefined,
         }}
         transition={{
           layout: {
@@ -854,6 +865,7 @@ const handleFormSubmit = () => {
           border border-white/10
           rounded-2xl
           overflow-hidden
+          ${!isExpanded && !mobile ? "cursor-pointer" : ""}
           ${isExpanded ? "md:order-first xl:order-none md:scroll-mt-24" : ""}
           ${isExpanded
             ? "w-full xl:w-auto"
@@ -925,10 +937,10 @@ const handleFormSubmit = () => {
                   {/* <div className="inline-flex items-center rounded-full bg-blue-500/15 px-2.5 py-1 text-[9px] lg:text-[10px] font-semibold uppercase tracking-[0.2em] text-blue-200">
                     {service.label}
                   </div> */}
-                  <h3 className="mt-2 text-lg lg:text-2xl font-bold text-white">
+                  <h3 className={`mt-2 font-bold text-white ${compactLaptop ? "text-base lg:text-lg" : "text-lg lg:text-2xl"}`}>
                     {service.title}
                   </h3>
-                  <p className="mt-1 text-xs lg:text-sm text-white/70">
+                  <p className={`mt-1 text-white/70 ${compactLaptop ? "text-[11px] lg:text-xs" : "text-xs lg:text-sm"}`}>
                     {service.description}
                   </p>
                 </div>
@@ -954,7 +966,7 @@ const handleFormSubmit = () => {
                     <div className="mb-4  w-fit inline-flex items-center rounded-full bg-blue-500/15 px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.2em] text-blue-300">
                       Service Selection
                     </div>
-                    <h2 className="text-3xl font-bold mb-2">
+                    <h2 className={detailHeadingClass}>
                       Detailed Service View
                     </h2>
 
@@ -973,6 +985,7 @@ const handleFormSubmit = () => {
                               flex items-center gap-3
                               rounded-2xl border overflow-hidden
                               text-left
+                              cursor-pointer
                               transition-all duration-200
                               focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-400/60
                               ${
@@ -992,11 +1005,11 @@ const handleFormSubmit = () => {
                             </span>
                             <div className="flex flex-col relative z-10">
                               {isActive && (
-                                <span className="text-[10px] uppercase tracking-[0.18em] text-blue-300">
+                                <span className={`uppercase tracking-[0.18em] text-blue-300 ${compactLaptop ? "text-[9px]" : "text-[10px]"}`}>
                                   Active Selection
                                 </span>
                               )}
-                              <span className="text-sm text-white/90 font-semibold">
+                              <span className={featureTitleClass}>
                                 {feature.title}
                               </span>
                             </div>
@@ -1025,20 +1038,20 @@ const handleFormSubmit = () => {
                           </span>
                         </div>
                         <div>
-                          <h3 className="text-xl font-bold text-white">
+                          <h3 className={`${compactLaptop ? "text-lg" : "text-xl"} font-bold text-white`}>
                             {selectedFeature?.title}
                           </h3>
-                          <p className="text-sm text-blue-300/90">
+                          <p className={`${compactLaptop ? "text-xs" : "text-sm"} text-blue-300/90`}>
                             {service.label}
                           </p>
                         </div>
                       </div>
 
                       <div className="mt-6">
-                        <p className="text-[11px] uppercase tracking-[0.2em] text-white/40">
+                        <p className={`uppercase tracking-[0.2em] text-white/40 ${compactLaptop ? "text-[10px]" : "text-[11px]"}`}>
                           Service Overview
                         </p>
-                        <p className="mt-3 text-sm leading-relaxed text-white/70">
+                        <p className={`mt-3 leading-relaxed text-white/70 ${compactLaptop ? "text-xs" : "text-sm"}`}>
                           {selectedFeature?.description ?? service.description}
                         </p>
                       </div>
@@ -1057,35 +1070,32 @@ const handleFormSubmit = () => {
                                 "_blank"
                               )
                             }}
-                          className="rounded-full bg-blue-500 px-5 py-2 text-sm font-semibold text-white transition hover:bg-blue-400"
+                          className={`cursor-pointer rounded-full bg-blue-500 px-5 py-2 font-semibold text-white transition hover:bg-blue-400 ${compactLaptop ? "text-xs" : "text-sm"}`}
                         >
                           Apply for this Service
                         </button>
                       </div>
-                      <div className="mt-auto flex items-center justify-between gap-4 rounded-2xl border border-white/10 bg-gradient-to-r from-white/10 via-white/5 to-transparent px-2 py-4">
-                    <div className="flex items-center gap-3">
-                      <span className="flex h-10 w-10 items-center justify-center rounded-full bg-blue-500/20 text-blue-300">
-                        <span className="material-symbols-outlined text-xl">
-                          help_outline
-                        </span>
-                      </span>
-                      <div>
-                        <p className="text-sm font-semibold text-white">
-                          Talk to an expert?
-                        </p>
-                        {/* <p className="text-xs text-white/60">
-                          Get personalised guidance for your unique project.
-                        </p> */}
+                      <div className="mt-auto flex flex-col gap-4 rounded-2xl border border-white/10 bg-gradient-to-r from-white/10 via-white/5 to-transparent px-3 py-4 sm:flex-row sm:items-center sm:justify-between">
+                        <div className="flex items-center gap-3">
+                          <span className="flex h-10 w-10 items-center justify-center rounded-full bg-blue-500/20 text-blue-300">
+                            <span className="material-symbols-outlined text-xl">
+                              help_outline
+                            </span>
+                          </span>
+                          <div>
+                            <p className={`${compactLaptop ? "text-xs" : "text-sm"} font-semibold text-white`}>
+                              Talk to an expert?
+                            </p>
+                          </div>
+                        </div>
+                        <button
+                          type="button"
+                          onClick={() => setShowChat1(true)}
+                          className="w-full cursor-pointer rounded-full border border-blue-400/40 bg-blue-500/10 px-4 py-2 text-xs font-semibold text-blue-200 transition hover:border-blue-300/60 hover:bg-blue-500/20 sm:w-auto"
+                        >
+                          I need help
+                        </button>
                       </div>
-                    </div>
-                    <button
-                      type="button"
-                        onClick={() => setShowChat1(true)}
-                      className="rounded-full border border-blue-400/40 bg-blue-500/10 px-4 py-2 text-xs font-semibold text-blue-200 transition hover:border-blue-300/60 hover:bg-blue-500/20 cursor-pointer"
-                    >
-                      I need help
-                    </button>
-                  </div>
                     </div>
                   </div>
                   </div>
@@ -1095,8 +1105,8 @@ const handleFormSubmit = () => {
               ) : (
                 <>
                   <div className="flex-1">
-                    <h2 className="text-3xl font-bold mb-4">{service.title}</h2>
-                    <p className="text-white/70 mb-6 leading-relaxed italic">
+                    <h2 className={serviceHeadingClass}>{service.title}</h2>
+                    <p className={`mb-6 leading-relaxed italic text-white/70 ${compactLaptop ? "text-sm" : ""}`}>
                       “{service.description}”
                     </p>
 
@@ -1114,6 +1124,7 @@ const handleFormSubmit = () => {
                             flex items-center gap-3
                             rounded-2xl border border-white/10
                             bg-white/5 px-4 py-4 text-left
+                            cursor-pointer
                             transition-all duration-200
                             hover:border-blue-400/60 hover:bg-white/10
                             focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-400/60
@@ -1122,7 +1133,7 @@ const handleFormSubmit = () => {
                           <span className="material-symbols-outlined text-blue-300 text-xl">
                             {getFeatureIcon(feature.title)}
                           </span>
-                          <span className="text-sm text-white/90 font-semibold">
+                          <span className={featureTitleClass}>
                             {feature.title}
                           </span>
                         </button>
@@ -1130,7 +1141,7 @@ const handleFormSubmit = () => {
                     </div>
                   </div>
 
-                  <div className="mt-auto flex items-center justify-between gap-4 rounded-2xl border border-white/10 bg-gradient-to-r from-white/10 via-white/5 to-transparent px-5 py-4">
+                  <div className="mt-auto flex flex-col gap-4 rounded-2xl border border-white/10 bg-gradient-to-r from-white/10 via-white/5 to-transparent px-5 py-4 sm:flex-row sm:items-center sm:justify-between">
                     <div className="flex items-center gap-3">
                       <span className="flex h-10 w-10 items-center justify-center rounded-full bg-blue-500/20 text-blue-300">
                         <span className="material-symbols-outlined text-xl">
@@ -1138,10 +1149,10 @@ const handleFormSubmit = () => {
                         </span>
                       </span>
                       <div>
-                        <p className="text-sm font-semibold text-white">
+                        <p className={`${compactLaptop ? "text-xs" : "text-sm"} font-semibold text-white`}>
                           Not sure where to start?
                         </p>
-                        <p className="text-xs text-white/60">
+                        <p className={`text-white/60 ${compactLaptop ? "text-[11px]" : "text-xs"}`}>
                           Get personalised guidance for your unique project.
                         </p>
                       </div>
@@ -1149,7 +1160,7 @@ const handleFormSubmit = () => {
                     <button
                       type="button"
                       onClick={() => setShowChat(true)}
-                      className="rounded-full border border-blue-400/40 bg-blue-500/10 px-4 py-2 text-xs font-semibold text-blue-200 transition hover:border-blue-300/60 hover:bg-blue-500/20"
+                      className="w-full cursor-pointer rounded-full border border-blue-400/40 bg-blue-500/10 px-4 py-2 text-xs font-semibold text-blue-200 transition hover:border-blue-300/60 hover:bg-blue-500/20 sm:w-auto"
                     >
                       I need help
                     </button>
@@ -1212,7 +1223,7 @@ const handleFormSubmit = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.3 }}
             onClick={(e) => e.stopPropagation()}
-            className="m-4 flex h-[min(75vh,32rem)] w-[min(100%,24rem)] flex-col overflow-hidden rounded-t-2xl bg-white shadow-2xl sm:rounded-2xl dark:bg-slate-900"
+            className="m-4 flex h-[min(75vh,32rem)] w-[calc(100%-2rem)] max-w-sm flex-col overflow-hidden rounded-t-2xl bg-white shadow-2xl sm:rounded-2xl dark:bg-slate-900"
           >
             {/* Header */}
             <div className="flex items-center justify-between px-4 py-3 border-b border-slate-200 dark:border-slate-700">
@@ -1229,7 +1240,7 @@ const handleFormSubmit = () => {
 
             {/* Chat Body */}
             <div className="flex-1 p-4 overflow-y-auto space-y-3">
-              <div className="bg-blue-500/10 text-blue-700 dark:text-blue-300 px-4 py-2 rounded-xl w-fit max-w-[80%]">
+              <div className="w-fit max-w-[85%] break-words rounded-xl bg-blue-500/10 px-4 py-2 text-blue-700 dark:text-blue-300">
                 Hi 👋 How can I help you?
               </div>
             </div>
@@ -1259,7 +1270,7 @@ const handleFormSubmit = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.3 }}
             onClick={(e) => e.stopPropagation()}
-            className="m-4 flex h-[min(75vh,32rem)] w-[min(100%,24rem)] flex-col overflow-hidden rounded-t-2xl bg-white shadow-2xl sm:rounded-2xl dark:bg-slate-900"
+            className="m-4 flex h-[min(75vh,32rem)] w-[calc(100%-2rem)] max-w-sm flex-col overflow-hidden rounded-t-2xl bg-white shadow-2xl sm:rounded-2xl dark:bg-slate-900"
           >
             {/* Header */}
             <div className="flex items-center justify-between px-4 py-3 border-b border-slate-200 dark:border-slate-700">
@@ -1281,7 +1292,7 @@ const handleFormSubmit = () => {
               {messages.map((msg, index) => (
                 <div
                   key={index}
-                  className={`px-4 py-2 rounded-xl max-w-[85%] ${msg.sender === "user"
+                  className={`max-w-[85%] break-words rounded-xl px-4 py-2 ${msg.sender === "user"
                       ? "ml-auto bg-blue-500 text-white"
                       : "bg-blue-500/10 text-blue-700 dark:text-blue-300"
                     }`}
