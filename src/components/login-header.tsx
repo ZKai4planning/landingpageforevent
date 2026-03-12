@@ -12,14 +12,7 @@ export function LoginHeader() {
     <>
       {/* ================= HEADER ================= */}
       <header
-        className="
-          sticky top-0 z-50
-          flex items-center justify-between
-          border-b border-primary/10
-          px-4 sm:px-6 lg:px-10
-          bg-[#050b18] dark:bg-slate-900/80
-          backdrop-blur-md
-        "
+        className="sticky top-0 z-50 flex items-center justify-between border-b border-primary/10 px-4 sm:px-6 lg:px-10 bg-[#050b18] dark:bg-slate-900/80 backdrop-blur-md"
       >
         <div className="flex items-center gap-3 text-primary min-w-0">
           <button
