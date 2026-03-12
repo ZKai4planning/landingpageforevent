@@ -8,6 +8,7 @@ import React, {
 } from "react";
 import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
 import { motion, AnimatePresence } from "framer-motion";
+import styles from "./circular-testimonials.module.css";
 
 interface Testimonial {
   quote: string;
@@ -177,23 +178,26 @@ export const CircularTestimonials = ({
   };
 
   return (
-    <div className="testimonial-container" data-layout={isTwoColumn ? "two" : "one"}>
-      <div className="testimonial-grid">
+    <div
+      className={styles.testimonialContainer}
+      data-layout={isTwoColumn ? "two" : "one"}
+    >
+      <div className={styles.testimonialGrid}>
         {/* Images */}
-        <div className="image-container" ref={imageContainerRef}>
+        <div className={styles.imageContainer} ref={imageContainerRef}>
           {testimonials.map((testimonial, index) => (
             <img
               key={testimonial.src}
               src={testimonial.src}
               alt={testimonial.name}
-              className="testimonial-image"
+              className={styles.testimonialImage}
               data-index={index}
               style={getImageStyle(index)}
             />
           ))}
         </div>
         {/* Content */}
-        <div className="testimonial-content">
+        <div className={styles.testimonialContent}>
           <AnimatePresence mode="wait">
             <motion.div
               key={activeIndex}
@@ -204,19 +208,19 @@ export const CircularTestimonials = ({
               transition={{ duration: 0.3, ease: "easeInOut" }}
             >
               <h3
-                className="name"
+                className={styles.name}
                 style={{ color: colorName, fontSize: fontSizeName }}
               >
                 {activeTestimonial.name}
               </h3>
               <p
-                className="designation"
+                className={styles.designation}
                 style={{ color: colorDesignation, fontSize: fontSizeDesignation }}
               >
                 {activeTestimonial.designation}
               </p>
               <motion.p
-                className="quote"
+                className={styles.quote}
                 style={{ color: colorTestimony, fontSize: fontSizeQuote }}
               >
                 {activeTestimonial.quote.split(" ").map((word, i) => (
@@ -245,9 +249,9 @@ export const CircularTestimonials = ({
               </motion.p>
             </motion.div>
           </AnimatePresence>
-          <div className="arrow-buttons">
+          <div className={styles.arrowButtons}>
             <button
-              className="arrow-button prev-button"
+              className={styles.arrowButton}
               onClick={handlePrev}
               style={{
                 backgroundColor: hoverPrev ? colorArrowHoverBg : colorArrowBg,
@@ -259,7 +263,7 @@ export const CircularTestimonials = ({
               <FaArrowLeft size={28} color={colorArrowFg} />
             </button>
             <button
-              className="arrow-button next-button"
+              className={styles.arrowButton}
               onClick={handleNext}
               style={{
                 backgroundColor: hoverNext ? colorArrowHoverBg : colorArrowBg,
@@ -273,102 +277,6 @@ export const CircularTestimonials = ({
           </div>
         </div>
       </div>
-      <style jsx>{`
-        .testimonial-container {
-          width: 100%;
-          max-width: 56rem;
-          padding: 2rem;
-        }
-        .testimonial-grid {
-          display: grid;
-          gap: 5rem;
-        }
-        .image-container {
-          position: relative;
-          width: 100%;
-          height: 24rem;
-          perspective: 1000px;
-          overflow: visible;
-        }
-        .testimonial-image {
-          position: absolute;
-          width: 100%;
-          height: 100%;
-          object-fit: cover;
-          border-radius: 1.5rem;
-          box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-        }
-        .testimonial-content {
-          display: flex;
-          flex-direction: column;
-          justify-content: space-between;
-        }
-        .name {
-          font-weight: bold;
-          margin-bottom: 0.25rem;
-        }
-        .designation {
-          margin-bottom: 2rem;
-        }
-        .quote {
-          line-height: 1.75;
-        }
-        .arrow-buttons {
-          display: flex;
-          gap: 1.5rem;
-          padding-top: 3rem;
-        }
-        .arrow-button {
-          width: 2.7rem;
-          height: 2.7rem;
-          border-radius: 50%;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          cursor: pointer;
-          transition: background-color 0.3s;
-          border: none;
-        }
-        .word {
-          display: inline-block;
-        }
-        .testimonial-container[data-layout="two"] .testimonial-grid {
-          grid-template-columns: 1fr 1fr;
-        }
-        .testimonial-container[data-layout="two"] .arrow-buttons {
-          padding-top: 0;
-        }
-        @media (max-width: 640px) {
-          .testimonial-container {
-            padding: 1.25rem;
-          }
-          .testimonial-grid {
-            gap: 2.5rem;
-          }
-          .image-container {
-            height: 16rem;
-          }
-          .arrow-buttons {
-            gap: 0.75rem;
-            padding-top: 1.5rem;
-          }
-          .arrow-button {
-            width: 2.2rem;
-            height: 2.2rem;
-          }
-        }
-        @media (min-width: 641px) and (max-width: 767px) {
-          .testimonial-container {
-            padding: 1.5rem;
-          }
-          .testimonial-grid {
-            gap: 3.5rem;
-          }
-          .image-container {
-            height: 20rem;
-          }
-        }
-      `}</style>
     </div>
   );
 };
