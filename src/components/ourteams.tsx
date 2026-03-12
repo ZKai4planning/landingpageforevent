@@ -31,20 +31,17 @@ const testimonials = [
 export const OurTeams = () => (
   <section>
     {/* Dark testimonials section */}
-    <div className="bg-[#060507] px-6 py-20 flex flex-col items-center justify-center relative">
+    <div className="bg-[#060507] px-4 sm:px-6 py-16 sm:py-20 flex flex-col items-center justify-center relative">
 
       {/* HEADING */}
-      <div className="text-center mb-16">
-        <h2 className="text-4xl md:text-5xl font-bold text-white">
+      <div className="text-center mb-12 sm:mb-16">
+        <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white">
           MEET <span className="text-neutral-400 italic">OUR</span> TEAM
         </h2>
       </div>
 
       {/* TESTIMONIALS */}
-      <div
-        className="relative flex items-center justify-center w-full"
-        style={{ maxWidth: "1024px" }}
-      >
+      <div className="relative flex items-center justify-center w-full max-w-5xl">
         <CircularTestimonials
           testimonials={testimonials}
           autoplay={true}
@@ -57,9 +54,9 @@ export const OurTeams = () => (
             arrowHoverBackground: "#f7f7ff",
           }}
           fontSizes={{
-            name: "28px",
-            designation: "20px",
-            quote: "20px",
+            name: "clamp(1.25rem, 4vw, 1.75rem)",
+            designation: "clamp(0.95rem, 2.8vw, 1.25rem)",
+            quote: "clamp(0.95rem, 2.8vw, 1.25rem)",
           }}
         />
       </div>

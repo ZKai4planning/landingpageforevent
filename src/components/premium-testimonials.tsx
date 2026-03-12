@@ -157,7 +157,7 @@ const fadeInUp: Variants = {
   };
 
   return (
-    <section id="testimonials" className="relative py-32 bg-gradient-to-br from-black to-black text-white overflow-hidden">
+    <section id="testimonials" className="relative py-20 sm:py-24 lg:py-32 bg-gradient-to-br from-black to-black text-white overflow-hidden">
       {/* Enhanced Background Effects */}
       <div className="absolute inset-0">
         {/* Animated gradient mesh - Changed to Dark Slate/Blue */}
@@ -230,7 +230,7 @@ const fadeInUp: Variants = {
 
       <motion.div 
         ref={containerRef}
-        className="relative z-10 max-w-7xl mx-auto px-6"
+        className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8"
         variants={staggerContainer}
         initial="hidden"
         whileInView="visible"
@@ -259,7 +259,7 @@ const fadeInUp: Variants = {
           </motion.div>
 
           <motion.h2 
-            className="text-4xl sm:text-6xl md:text-7xl font-bold mb-8 tracking-tight"
+            className="text-3xl sm:text-5xl md:text-7xl font-bold mb-6 sm:mb-8 tracking-tight"
             variants={fadeInUp}
           >
             <span className="bg-clip-text text-transparent bg-gradient-to-r from-white to-white/80">
@@ -285,7 +285,7 @@ const fadeInUp: Variants = {
           </motion.h2>
           
           <motion.p 
-            className="text-xl sm:text-2xl text-white/60 max-w-4xl mx-auto leading-relaxed"
+            className="text-lg sm:text-xl md:text-2xl text-white/60 max-w-4xl mx-auto leading-relaxed"
             variants={fadeInUp}
           >
             Join thousands of businesses already transforming their operations with our premium AI solutions.
@@ -294,7 +294,7 @@ const fadeInUp: Variants = {
 
         {/* Main Testimonial Display */}
         <div className="relative max-w-6xl mx-auto mb-16">
-          <div className="relative min-h-[640px] sm:min-h-[560px] md:min-h-[400px] md:h-[400px] perspective-1000">
+          <div className="relative min-h-[520px] sm:min-h-[560px] md:min-h-[400px] md:h-[400px] perspective-1000">
             <AnimatePresence initial={false} custom={direction}>
               <motion.div
                 key={currentIndex}
@@ -398,7 +398,7 @@ const fadeInUp: Variants = {
                     {/* Content */}
                     <div className="flex-1">
                       <motion.blockquote 
-                        className="text-xl md:text-2xl text-white/80 leading-relaxed mb-8 font-light italic"
+                        className="text-base sm:text-lg md:text-2xl text-white/80 leading-relaxed mb-6 sm:mb-8 font-light italic"
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         transition={{ delay: 0.3, duration: 0.8 }}

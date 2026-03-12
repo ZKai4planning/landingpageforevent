@@ -15,6 +15,7 @@ export default function HomeHero() {
           playsInline
           preload="auto"
           className="w-full h-full object-cover"
+          suppressHydrationWarning
         >
           <source src="/blueprinttobuilding.mp4" type="video/mp4" />
         </video>

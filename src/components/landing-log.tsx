@@ -25,6 +25,7 @@ export function Logo() {
         muted
         playsInline
         className="w-full h-full object-contain"
+        suppressHydrationWarning
       />
     </div>
   )

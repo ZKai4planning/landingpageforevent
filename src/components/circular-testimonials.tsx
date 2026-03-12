@@ -338,6 +338,36 @@ export const CircularTestimonials = ({
             padding-top: 0;
           }
         }
+        @media (max-width: 640px) {
+          .testimonial-container {
+            padding: 1.25rem;
+          }
+          .testimonial-grid {
+            gap: 2.5rem;
+          }
+          .image-container {
+            height: 16rem;
+          }
+          .arrow-buttons {
+            gap: 0.75rem;
+            padding-top: 1.5rem;
+          }
+          .arrow-button {
+            width: 2.2rem;
+            height: 2.2rem;
+          }
+        }
+        @media (min-width: 641px) and (max-width: 767px) {
+          .testimonial-container {
+            padding: 1.5rem;
+          }
+          .testimonial-grid {
+            gap: 3.5rem;
+          }
+          .image-container {
+            height: 20rem;
+          }
+        }
       `}</style>
     </div>
   );
