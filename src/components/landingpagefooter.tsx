@@ -4,12 +4,15 @@ import Link from "next/link"
 import { Mail, Phone, MapPin } from "lucide-react"
 import Image from "next/image"
 
+const WHATSAPP_URL =
+  "https://wa.me/447777788885?text=Hello%21%20I%20have%20a%20query."
+
 export default function Footer() {
   return (
     <footer className="bg-black text-white border-t border-white/10">
       <div className="max-w-8xl mx-auto px-6 sm:px-8 lg:px-16 py-12 sm:py-16">
         {/* Top Section */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-10 sm:gap-12">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-10 sm:gap-12">
           
           {/* Brand */}
           <div className="space-y-4 text-center md:text-left">
@@ -34,60 +37,22 @@ export default function Footer() {
             </p>
           </div>
 
-          {/* Services */}
-          <div id="services" className="text-center md:text-left">
-            <h4 className="font-medium mb-4">Services</h4>
-            <ul className="space-y-3 text-sm text-white/70">
-              <li>
-                <Link id="services" href="#services" className="hover:text-white">
-                  Home Owner Planning
-                </Link>
-              </li>
-              <li>
-                <Link href="#services" className="hover:text-white">
-                  Construction & Build
-                </Link>
-              </li>
-              <li>
-                <Link href="#services" className="hover:text-white">
-                  Business & AI Planning
-                </Link>
-              </li>
-              <li>
-                <Link href="#services" className="hover:text-white">
-                  Personal Concierge
-                </Link>
-              </li>
-              <li>
-                <Link href="#services" className="hover:text-white">
-                  Planning Professionals
-                </Link>
-              </li>
-              <li>
-                <Link href="#services" className="hover:text-white">
-                  Tailored Concierge
-                </Link>
-              </li>
-            </ul>
-          </div>
-
-          {/* Company */}
+          {/* Quick Links */}
           <div className="text-center md:text-left">
-            <h4 className="font-medium mb-4">Company</h4>
+            <h4 className="font-medium mb-4">Quick Links</h4>
             <ul className="space-y-3 text-sm text-white/70">
               <li>
-                <Link href="/about" className="hover:text-white">
-                  About Us
+                <Link href="#services" className="hover:text-white">
+                  Service
                 </Link>
               </li>
               <li>
-                <Link href="/how-it-works" className="hover:text-white">
+                <Link href="#services" className="hover:text-white">
                   How It Works
                 </Link>
               </li>
-             
               <li>
-                <Link href="/contact" className="hover:text-white">
+                <Link href={WHATSAPP_URL} target="_blank" className="hover:text-white">
                   Contact
                 </Link>
               </li>
@@ -104,7 +69,9 @@ export default function Footer() {
               </li>
               <li className="flex items-center justify-center md:justify-start gap-3">
                 <Phone className="h-4 w-4 text-indigo-400" />
-                <span>+44 7777788885</span>
+                <Link href={WHATSAPP_URL} target="_blank" className="hover:text-white">
+                  +44 7777788885
+                </Link>
               </li>
               <li className="flex items-start justify-center md:justify-start gap-3">
                 <MapPin className="h-4 w-4 text-indigo-400 mt-0.5" />
@@ -125,7 +92,7 @@ export default function Footer() {
             © {new Date().getFullYear()} AI4Planning. All rights reserved.
           </p>
 
-          <div className="flex flex-wrap items-center justify-center md:justify-end gap-4 sm:gap-6">
+          {/* <div className="flex flex-wrap items-center justify-center md:justify-end gap-4 sm:gap-6">
             <Link href="/cookie" className="hover:text-white">
               Cookies Policy
             </Link>
@@ -135,10 +102,10 @@ export default function Footer() {
             <Link href="#" className="hover:text-white">
               Terms
             </Link>
-            <Link href="/contact" className="hover:text-white">
+            <Link href={WHATSAPP_URL} target="_blank" className="hover:text-white">
               Support
             </Link>
-          </div>
+          </div> */}
         </div>
       </div>
     </footer>

@@ -3,7 +3,10 @@
 import { motion } from "framer-motion"
 
 const heroText =
-  "Your partner in planning, whether you’re an individual, homeowner, small business, or a planning consultant. We streamline the path from concept to completion."
+  "Your partner in planning, whether you're an individual, homeowner, small business, or a planning consultant. We streamline the path from concept to completion."
+
+const whatsappUrl =
+  "https://wa.me/447777788885?text=Hello%21%20I%20have%20a%20query."
 
 export default function HomeHero() {
   return (
@@ -24,6 +27,19 @@ export default function HomeHero() {
 
       <div className="relative z-10 flex min-h-[100svh] items-center justify-center px-4 py-20 text-center sm:px-6 sm:py-24 md:px-8 md:py-28 lg:px-10 xl:py-32">
         <div className="w-full max-w-6xl">
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{
+              duration: 0.5,
+              ease: "easeOut",
+              delay: 5.2,
+            }}
+            className="mb-5 inline-flex items-center rounded-full border border-blue-300/40 bg-blue-500/15 px-6 py-2 text-sm font-semibold tracking-[0.2em] text-blue-100 sm:mb-6 sm:px-8 sm:py-2.5 sm:text-base"
+          >
+            In Beta
+          </motion.div>
+
           <motion.h1
             initial={{ scale: 0.25, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
@@ -96,10 +112,7 @@ export default function HomeHero() {
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               onClick={() => {
-                window.open(
-                  "https://calendly.com/ai4planning-info/30min",
-                  "_blank"
-                )
+                window.open(whatsappUrl, "_blank", "noopener,noreferrer")
               }}
               className="w-full rounded-sm border-2 border-white bg-white/10 px-6 py-3.5 text-sm text-white transition hover:bg-white/20 sm:w-auto sm:min-w-[13rem] sm:px-8 sm:text-base lg:px-10"
             >

@@ -90,8 +90,8 @@ export function CookieConsent() {
   if (!isVisible) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-end justify-start  bg-black/20 animate-in fade-in duration-300">
-      <div className="w-full max-w-3xl rounded-2xl border border-zinc-700/50 bg-zinc-900 shadow-2xl overflow-hidden">
+    <div className="pointer-events-none fixed inset-x-0 bottom-0 z-50 flex items-end justify-start p-3 sm:p-4 animate-in fade-in duration-300">
+      <div className="pointer-events-auto w-full max-w-3xl rounded-2xl border border-zinc-700/50 bg-zinc-900 shadow-2xl overflow-hidden">
 
         {!showDetails ? (
           // --- ENHANCED INITIAL BANNER ---
@@ -151,7 +151,7 @@ export function CookieConsent() {
                   className="h-10 w-full rounded-xl border border-zinc-500/60 bg-zinc-100 text-zinc-900 font-semibold transition-all duration-200 hover:-translate-y-0.5 hover:bg-white hover:shadow-md focus-visible:ring-2 focus-visible:ring-zinc-300 focus-visible:ring-offset-2 focus-visible:ring-offset-zinc-900"
                   onClick={handleRejectAll}
                 >
-                  Reject Optional
+                  Reject
                 </Button>
 
                 <Button
@@ -159,7 +159,7 @@ export function CookieConsent() {
                   className="h-10 w-full rounded-xl border border-zinc-700 bg-zinc-900/80 text-zinc-200 transition-all duration-200 hover:-translate-y-0.5 hover:bg-zinc-800 hover:text-white"
                   onClick={() => setShowDetails(true)}
                 >
-                  Manage Options
+                  Manage 
                 </Button>
               </div>
             </div>
