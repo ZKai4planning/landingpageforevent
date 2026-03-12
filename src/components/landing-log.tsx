@@ -1,20 +1,4 @@
-import Image from "next/image"
-
-// export function Logo() {
-//   return (
-//     <div className="w-20 h-12">
-//       <Image
-//         src="/logo.png"
-//         alt="Ai4Planning logo"
-//         width={90}
-//         height={42}
-//         className="object-contain"
-//       />
-//     </div>
-//   )
-// }
-
-
+"use client"
 export function Logo() {
   return (
     <div className="w-[88px] h-[64px] sm:w-[120px] sm:h-[88px] overflow-hidden">

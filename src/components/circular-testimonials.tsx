@@ -68,6 +68,7 @@ export const CircularTestimonials = ({
   const [hoverPrev, setHoverPrev] = useState(false);
   const [hoverNext, setHoverNext] = useState(false);
   const [containerWidth, setContainerWidth] = useState(1200);
+  const isTwoColumn = containerWidth >= 720;
 
   const imageContainerRef = useRef<HTMLDivElement>(null);
   const autoplayIntervalRef = useRef<NodeJS.Timeout | null>(null);
@@ -125,7 +126,7 @@ export const CircularTestimonials = ({
 
   // Compute transforms for each image (always show 3: left, center, right)
   function getImageStyle(index: number): React.CSSProperties {
-    const gap = calculateGap(containerWidth);
+    const gap = Math.min(calculateGap(containerWidth), containerWidth * 0.28);
     const maxStickUp = gap * 0.8;
     const offset = (index - activeIndex + testimonialsLength) % testimonialsLength;
     // const zIndex = testimonialsLength - Math.abs(offset);
@@ -176,7 +177,7 @@ export const CircularTestimonials = ({
   };
 
   return (
-    <div className="testimonial-container">
+    <div className="testimonial-container" data-layout={isTwoColumn ? "two" : "one"}>
       <div className="testimonial-grid">
         {/* Images */}
         <div className="image-container" ref={imageContainerRef}>
@@ -287,6 +288,7 @@ export const CircularTestimonials = ({
           width: 100%;
           height: 24rem;
           perspective: 1000px;
+          overflow: visible;
         }
         .testimonial-image {
           position: absolute;
@@ -330,13 +332,11 @@ export const CircularTestimonials = ({
         .word {
           display: inline-block;
         }
-        @media (min-width: 768px) {
-          .testimonial-grid {
-            grid-template-columns: 1fr 1fr;
-          }
-          .arrow-buttons {
-            padding-top: 0;
-          }
+        .testimonial-container[data-layout="two"] .testimonial-grid {
+          grid-template-columns: 1fr 1fr;
+        }
+        .testimonial-container[data-layout="two"] .arrow-buttons {
+          padding-top: 0;
         }
         @media (max-width: 640px) {
           .testimonial-container {
