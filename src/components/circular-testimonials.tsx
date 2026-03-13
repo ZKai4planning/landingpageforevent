@@ -29,10 +29,12 @@ interface FontSizes {
   quote?: string;
 }
 interface CircularTestimonialsProps {
-  testimonials: Testimonial[];
+  testimonials: readonly Testimonial[];
   autoplay?: boolean;
   colors?: Colors;
   fontSizes?: FontSizes;
+  onActiveIndexChange?: (index: number) => void;
+  onTestimonialClick?: (index: number) => void;
 }
 
 function calculateGap(width: number) {
@@ -51,6 +53,8 @@ export const CircularTestimonials = ({
   autoplay = true,
   colors = {},
   fontSizes = {},
+  onActiveIndexChange,
+  onTestimonialClick,
 }: CircularTestimonialsProps) => {
   // Color & font config
   const colorName = colors.name ?? "#000";
@@ -77,6 +81,23 @@ export const CircularTestimonials = ({
     () => testimonials[activeIndex],
     [activeIndex, testimonials]
   );
+  const showNavigation = testimonialsLength > 1;
+
+  useEffect(() => {
+    if (testimonialsLength === 0) {
+      setActiveIndex(0);
+      return;
+    }
+
+    if (activeIndex >= testimonialsLength) {
+      setActiveIndex(0);
+    }
+  }, [activeIndex, testimonialsLength]);
+
+  useEffect(() => {
+    if (!activeTestimonial) return;
+    onActiveIndexChange?.(activeIndex);
+  }, [activeIndex, activeTestimonial, onActiveIndexChange]);
 
   // Responsive gap calculation
   useEffect(() => {
@@ -92,7 +113,7 @@ export const CircularTestimonials = ({
 
   // Autoplay
   useEffect(() => {
-    if (autoplay) {
+    if (autoplay && testimonialsLength > 1) {
       autoplayIntervalRef.current = setInterval(() => {
         setActiveIndex((prev) => (prev + 1) % testimonialsLength);
       }, 5000);
@@ -104,6 +125,7 @@ export const CircularTestimonials = ({
 
   // Keyboard navigation
   useEffect(() => {
+    if (testimonialsLength <= 1) return;
     const handleKey = (e: KeyboardEvent) => {
       if (e.key === "ArrowLeft") handlePrev();
       if (e.key === "ArrowRight") handleNext();
@@ -125,10 +147,15 @@ export const CircularTestimonials = ({
 
   // Compute transforms for each image (always show 3: left, center, right)
   function getImageStyle(index: number): React.CSSProperties {
+    if (testimonialsLength === 0) {
+      return {
+        opacity: 0,
+        pointerEvents: "none",
+      };
+    }
+
     const gap = calculateGap(containerWidth);
     const maxStickUp = gap * 0.8;
-    const offset = (index - activeIndex + testimonialsLength) % testimonialsLength;
-    // const zIndex = testimonialsLength - Math.abs(offset);
     const isActive = index === activeIndex;
     const isLeft = (activeIndex - 1 + testimonialsLength) % testimonialsLength === index;
     const isRight = (activeIndex + 1) % testimonialsLength === index;
@@ -175,24 +202,39 @@ export const CircularTestimonials = ({
     exit: { opacity: 0, y: -20 },
   };
 
+  if (!activeTestimonial) {
+    return null;
+  }
+
   return (
-    <div className="testimonial-container">
-      <div className="testimonial-grid">
+    <div className="w-full max-w-[56rem] p-5 sm:p-6 md:p-8">
+      <div className="grid gap-10 sm:gap-14 md:grid-cols-2 md:gap-20">
         {/* Images */}
-        <div className="image-container" ref={imageContainerRef}>
+        <div
+          className="relative h-64 w-full perspective-[1000px] sm:h-80 md:h-96"
+          ref={imageContainerRef}
+        >
           {testimonials.map((testimonial, index) => (
             <img
               key={testimonial.src}
               src={testimonial.src}
               alt={testimonial.name}
-              className="testimonial-image"
+              className={`absolute h-full w-full rounded-3xl object-cover shadow-[0_10px_30px_rgba(0,0,0,0.2)] transition duration-300 ${
+                index === activeIndex
+                  ? "cursor-pointer ring-2 ring-blue-400/60"
+                  : "cursor-pointer hover:ring-2 hover:ring-white/30"
+              }`}
               data-index={index}
               style={getImageStyle(index)}
+              onClick={() => {
+                setActiveIndex(index);
+                onTestimonialClick?.(index);
+              }}
             />
           ))}
         </div>
         {/* Content */}
-        <div className="testimonial-content">
+        <div className="flex flex-col justify-between">
           <AnimatePresence mode="wait">
             <motion.div
               key={activeIndex}
@@ -203,19 +245,19 @@ export const CircularTestimonials = ({
               transition={{ duration: 0.3, ease: "easeInOut" }}
             >
               <h3
-                className="name"
+                className="mb-1 font-bold"
                 style={{ color: colorName, fontSize: fontSizeName }}
               >
                 {activeTestimonial.name}
               </h3>
               <p
-                className="designation"
+                className="mb-8"
                 style={{ color: colorDesignation, fontSize: fontSizeDesignation }}
               >
                 {activeTestimonial.designation}
               </p>
               <motion.p
-                className="quote"
+                className="leading-7"
                 style={{ color: colorTestimony, fontSize: fontSizeQuote }}
               >
                 {activeTestimonial.quote.split(" ").map((word, i) => (
@@ -244,131 +286,36 @@ export const CircularTestimonials = ({
               </motion.p>
             </motion.div>
           </AnimatePresence>
-          <div className="arrow-buttons">
-            <button
-              className="arrow-button prev-button"
-              onClick={handlePrev}
-              style={{
-                backgroundColor: hoverPrev ? colorArrowHoverBg : colorArrowBg,
-              }}
-              onMouseEnter={() => setHoverPrev(true)}
-              onMouseLeave={() => setHoverPrev(false)}
-              aria-label="Previous testimonial"
-            >
-              <FaArrowLeft size={28} color={colorArrowFg} />
-            </button>
-            <button
-              className="arrow-button next-button"
-              onClick={handleNext}
-              style={{
-                backgroundColor: hoverNext ? colorArrowHoverBg : colorArrowBg,
-              }}
-              onMouseEnter={() => setHoverNext(true)}
-              onMouseLeave={() => setHoverNext(false)}
-              aria-label="Next testimonial"
-            >
-              <FaArrowRight size={28} color={colorArrowFg} />
-            </button>
-          </div>
+          {showNavigation ? (
+            <div className="flex gap-3 pt-6 sm:gap-6 md:pt-0">
+              <button
+                className="flex h-[2.2rem] w-[2.2rem] items-center justify-center rounded-full border-0 transition-colors sm:h-[2.7rem] sm:w-[2.7rem]"
+                onClick={handlePrev}
+                style={{
+                  backgroundColor: hoverPrev ? colorArrowHoverBg : colorArrowBg,
+                }}
+                onMouseEnter={() => setHoverPrev(true)}
+                onMouseLeave={() => setHoverPrev(false)}
+                aria-label="Previous testimonial"
+              >
+                <FaArrowLeft size={28} color={colorArrowFg} />
+              </button>
+              <button
+                className="flex h-[2.2rem] w-[2.2rem] items-center justify-center rounded-full border-0 transition-colors sm:h-[2.7rem] sm:w-[2.7rem]"
+                onClick={handleNext}
+                style={{
+                  backgroundColor: hoverNext ? colorArrowHoverBg : colorArrowBg,
+                }}
+                onMouseEnter={() => setHoverNext(true)}
+                onMouseLeave={() => setHoverNext(false)}
+                aria-label="Next testimonial"
+              >
+                <FaArrowRight size={28} color={colorArrowFg} />
+              </button>
+            </div>
+          ) : null}
         </div>
       </div>
-      <style jsx>{`
-        .testimonial-container {
-          width: 100%;
-          max-width: 56rem;
-          padding: 2rem;
-        }
-        .testimonial-grid {
-          display: grid;
-          gap: 5rem;
-        }
-        .image-container {
-          position: relative;
-          width: 100%;
-          height: 24rem;
-          perspective: 1000px;
-        }
-        .testimonial-image {
-          position: absolute;
-          width: 100%;
-          height: 100%;
-          object-fit: cover;
-          border-radius: 1.5rem;
-          box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-        }
-        .testimonial-content {
-          display: flex;
-          flex-direction: column;
-          justify-content: space-between;
-        }
-        .name {
-          font-weight: bold;
-          margin-bottom: 0.25rem;
-        }
-        .designation {
-          margin-bottom: 2rem;
-        }
-        .quote {
-          line-height: 1.75;
-        }
-        .arrow-buttons {
-          display: flex;
-          gap: 1.5rem;
-          padding-top: 3rem;
-        }
-        .arrow-button {
-          width: 2.7rem;
-          height: 2.7rem;
-          border-radius: 50%;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          cursor: pointer;
-          transition: background-color 0.3s;
-          border: none;
-        }
-        .word {
-          display: inline-block;
-        }
-        @media (min-width: 768px) {
-          .testimonial-grid {
-            grid-template-columns: 1fr 1fr;
-          }
-          .arrow-buttons {
-            padding-top: 0;
-          }
-        }
-        @media (max-width: 640px) {
-          .testimonial-container {
-            padding: 1.25rem;
-          }
-          .testimonial-grid {
-            gap: 2.5rem;
-          }
-          .image-container {
-            height: 16rem;
-          }
-          .arrow-buttons {
-            gap: 0.75rem;
-            padding-top: 1.5rem;
-          }
-          .arrow-button {
-            width: 2.2rem;
-            height: 2.2rem;
-          }
-        }
-        @media (min-width: 641px) and (max-width: 767px) {
-          .testimonial-container {
-            padding: 1.5rem;
-          }
-          .testimonial-grid {
-            gap: 3.5rem;
-          }
-          .image-container {
-            height: 20rem;
-          }
-        }
-      `}</style>
     </div>
   );
 };

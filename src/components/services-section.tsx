@@ -188,6 +188,13 @@ const services: Service[] = [
   },
 ]
 
+const RESTRICTED_SERVICE_IDS = new Set([
+  "Service-02",
+  "Service-03",
+  "Service-04",
+  "Service-06",
+])
+
 export default function ServicesSection() {
   const [expandedServiceId, setExpandedServiceId] = useState<string | null>(null)
   const expandedContainerRef = useRef<HTMLDivElement>(null)
@@ -341,6 +348,10 @@ export default function ServicesSection() {
           <h2 className={servicesHeadingClass}>
             Our Services
           </h2>
+          <p className="mx-auto mt-4 max-w-4xl text-lg leading-relaxed text-white/65 sm:text-xl">
+            Project Management &amp; Consultancy Marketplace - A curated service
+            connecting clients with experts across a broad range of industries.
+          </p>
         </div>
       )}
 
@@ -359,34 +370,53 @@ export default function ServicesSection() {
             </div>
           ) : (
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-              {services.map((service) => (
-                <button
-                  key={service.id}
-                  type="button"
-                  onClick={() => setExpandedServiceId(service.id)}
-                  className="group rounded-2xl border border-white/10 bg-white/5 p-6 text-left backdrop-blur-xl transition-all hover:border-blue-400/60 hover:shadow-xl hover:shadow-blue-500/20"
-                >
-                  <p className="mb-2 text-xs font-bold text-blue-400">
-                    {service.label}
-                  </p>
+              {services.map((service) => {
+                const isRestricted = RESTRICTED_SERVICE_IDS.has(service.id)
+                return (
+                  <button
+                    key={service.id}
+                    type="button"
+                    disabled={isRestricted}
+                    onClick={() => {
+                      if (isRestricted) return
+                      setExpandedServiceId(service.id)
+                    }}
+                    className={`group rounded-2xl border border-white/10 bg-white/5 p-6 text-left backdrop-blur-xl transition-all ${
+                      isRestricted
+                        ? "cursor-not-allowed blur-[3px] opacity-55"
+                        : "hover:border-blue-400/60 hover:shadow-xl hover:shadow-blue-500/20"
+                    }`}
+                  >
+                    <p className="mb-2 text-xs font-bold text-blue-400">
+                      {service.label}
+                    </p>
 
-                  <h3 className="mb-3 text-lg font-bold leading-snug">
-                    {service.subtitle}
-                  </h3>
+                    <h3 className="mb-3 text-lg font-bold leading-snug">
+                      {service.subtitle}
+                    </h3>
 
-                  <p className="text-sm italic leading-relaxed text-white/60">
-                    &quot;{service.description.substring(0, 90)}...&quot;
-                  </p>
+                    <p className="text-sm italic leading-relaxed text-white/60">
+                      &quot;{service.description.substring(0, 90)}...&quot;
+                    </p>
 
-                  <span className="relative mt-6 inline-flex items-center gap-1 self-start pt-6 font-semibold text-blue-400">
-                    Get Started
-                    <span className="transition-transform duration-300 group-hover:translate-x-2">
-                      -&gt;
+                    <span className="relative mt-6 inline-flex items-center gap-1 self-start pt-6 font-semibold text-blue-400">
+                      Get Started
+                      <span
+                        className={`transition-transform duration-300 ${
+                          isRestricted ? "" : "group-hover:translate-x-2"
+                        }`}
+                      >
+                        -&gt;
+                      </span>
+                      <span
+                        className={`absolute bottom-0 left-0 h-[2px] bg-blue-400 transition-all duration-300 ${
+                          isRestricted ? "w-8 opacity-70" : "w-0 group-hover:w-full"
+                        }`}
+                      />
                     </span>
-                    <span className="absolute bottom-0 left-0 h-[2px] w-0 bg-blue-400 transition-all duration-300 group-hover:w-full" />
-                  </span>
-                </button>
-              ))}
+                  </button>
+                )
+              })}
             </div>
           )
         ) : expandedServiceId ? (
@@ -398,25 +428,42 @@ export default function ServicesSection() {
               height: isWideDesktop ? expandedSectionHeight : undefined,
             }}
           >
-            {services.map((service, index) => (
-              <ServiceExpandPanel
-                key={service.id}
-                index={index}
-                service={service}
-                isExpanded={expandedServiceId === service.id}
-                compactLaptop={isCompactLaptop}
-                onExpand={() => setExpandedServiceId(service.id)}
-                onClose={() => setExpandedServiceId(null)}
-              />
-            ))}
+            {services.map((service, index) => {
+              const isRestricted = RESTRICTED_SERVICE_IDS.has(service.id)
+              return (
+                <ServiceExpandPanel
+                  key={service.id}
+                  index={index}
+                  service={service}
+                  isExpanded={expandedServiceId === service.id}
+                  compactLaptop={isCompactLaptop}
+                  disabled={isRestricted}
+                  onExpand={() => {
+                    if (isRestricted) return
+                    setExpandedServiceId(service.id)
+                  }}
+                  onClose={() => setExpandedServiceId(null)}
+                />
+              )
+            })}
           </div>
         ) : (
           <div className={desktopCardGridClass}>
-            {services.map((service) => (
+            {services.map((service) => {
+              const isRestricted = RESTRICTED_SERVICE_IDS.has(service.id)
+              return (
               <div
                 key={service.id}
-                onClick={() => setExpandedServiceId(service.id)}
-                className="group bg-white/5 backdrop-blur-xl border border-white/10 p-6 rounded-2xl cursor-pointer transition-all hover:border-blue-400/60 hover:shadow-xl hover:shadow-blue-500/20 flex flex-col"
+                onClick={() => {
+                  if (isRestricted) return
+                  setExpandedServiceId(service.id)
+                }}
+                aria-disabled={isRestricted}
+                className={`group bg-white/5 backdrop-blur-xl border border-white/10 p-6 rounded-2xl transition-all flex flex-col ${
+                  isRestricted
+                    ? "cursor-not-allowed blur-[3px] opacity-55"
+                    : "cursor-pointer hover:border-blue-400/60 hover:shadow-xl hover:shadow-blue-500/20"
+                }`}
               >
                 <div>
                   <p className="text-xs font-bold text-blue-400 mb-2">
@@ -434,13 +481,22 @@ export default function ServicesSection() {
 
                 <span className="mt-auto pt-6 text-blue-400 font-semibold inline-flex items-center gap-1 relative self-start">
                   Get Started
-                  <span className="transition-transform duration-300 group-hover:translate-x-2">
+                  <span
+                    className={`transition-transform duration-300 ${
+                      isRestricted ? "" : "group-hover:translate-x-2"
+                    }`}
+                  >
                     -&gt;
                   </span>
-                  <span className="absolute left-0 -bottom-1 h-[2px] w-0 bg-blue-400 transition-all duration-300 group-hover:w-full" />
+                  <span
+                    className={`absolute left-0 -bottom-1 h-[2px] bg-blue-400 transition-all duration-300 ${
+                      isRestricted ? "w-8 opacity-70" : "w-0 group-hover:w-full"
+                    }`}
+                  />
                 </span>
               </div>
-            ))}
+              )
+            })}
           </div>
         )}
       </div>

@@ -3,7 +3,7 @@
 import { motion } from "framer-motion"
 
 const heroText =
-  "Your partner in planning, whether you're an individual, homeowner, small business, or a planning consultant. We streamline the path from concept to completion."
+  "Turning complexity into clarity. Own your planning journey."
 
 const whatsappUrl =
   "https://wa.me/447777788885?text=Hello%21%20I%20have%20a%20query."
@@ -37,7 +37,7 @@ export default function HomeHero() {
             }}
             className="mb-5 inline-flex items-center rounded-full border border-blue-300/40 bg-blue-500/15 px-6 py-2 text-sm font-semibold tracking-[0.2em] text-blue-100 sm:mb-6 sm:px-8 sm:py-2.5 sm:text-base"
           >
-            In Beta
+             Pre Launch
           </motion.div>
 
           <motion.h1
@@ -65,7 +65,7 @@ export default function HomeHero() {
                 },
               },
             }}
-            className="mx-auto flex max-w-[min(92vw,60rem)] flex-wrap justify-center gap-x-1.5  text-balance text-[clamp(1rem,2.7vw,1.9rem)] leading-relaxed text-white/90"
+            className="mx-auto flex max-w-[min(92vw,52rem)] flex-wrap justify-center gap-x-1.5 text-balance text-[clamp(1.1rem,2.8vw,2rem)] font-medium leading-relaxed text-white/90"
           >
             {heroText.split(" ").map((word, index) => (
               <motion.span

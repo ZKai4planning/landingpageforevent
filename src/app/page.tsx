@@ -3,6 +3,7 @@ import HomeHero from "@/components/home-hero"
 import ServicesSection from "@/components/services-section"
 import PricingCardsLanding from "@/components/pricingcards-landing"
 import { OurTeams } from "@/components/ourteams"
+import { LeadCaptureForm } from "@/components/lead-capture-form"
 import { PremiumTestimonials } from "@/components/premium-testimonials"
 import WhatsAppButton from "@/components/whatsppp-button"
 import { CookieConsent } from "@/components/cookie-consent"
@@ -21,6 +22,7 @@ export default function Home() {
       <PremiumTestimonials />
       <WhatsAppButton />
       <CookieConsent />
+      <LeadCaptureForm />
       <Footer />
     </>
   )

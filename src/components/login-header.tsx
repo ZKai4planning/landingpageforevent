@@ -8,6 +8,13 @@ import { motion } from "framer-motion"
 export function LoginHeader() {
   const [showLogin, setShowLogin] = useState(false)
 
+  const handleSignUpClick = () => {
+    document.getElementById("lead-form")?.scrollIntoView({
+      behavior: "smooth",
+      block: "start",
+    })
+  }
+
   return (
     <>
       {/* ================= HEADER ================= */}
@@ -27,20 +34,12 @@ export function LoginHeader() {
         </div>
 
         <div className="flex items-center gap-3 sm:gap-6">
-          {/* <div className="hidden sm:block h-6 w-px bg-slate-200 dark:bg-slate-700" /> */}
-
-          {/* LOGIN BUTTON */}
-          {/* <button
-            onClick={() => setShowLogin(true)}
-            className="
-              text-xs sm:text-[15px] font-bold text-white
-              uppercase tracking-widest
-              whitespace-nowrap
-              hover:opacity-80 transition 
-            "
+          <button
+            onClick={handleSignUpClick}
+            className="rounded-full border border-blue-300/30 bg-blue-500/10 px-4 py-2 text-xs font-bold uppercase tracking-[0.22em] text-white transition hover:bg-blue-500/20 sm:px-5 sm:text-sm"
           >
-            Sign In
-          </button> */}
+            Sign Up
+          </button>
         </div>
       </header>
 

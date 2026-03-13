@@ -62,6 +62,8 @@ const plans = [
 ]
 
 export default function PricingCardsLanding() {
+  const restrictedPlans = new Set(["Silver", "Gold", "Platinum"])
+
   return (
     <section className="bg-[#050B18] text-white py-16 ">
       <div className="text-center mb-12 px-4">
@@ -70,22 +72,21 @@ export default function PricingCardsLanding() {
         </h2>
 
         <p className="text-white/60 text-lg sm:text-xl">
-          Choose the plan that&apos;s right for you and get started today.
+          Own your planning journey. Save time and money with AI-powered tools &mdash; choose the tier that fits your project
         </p>
       </div>
 
       <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 px-4">
         {plans.map((plan) => {
-          const isBronze = plan.name === "Bronze"
-          const isDisabled = !isBronze
+          const isRestricted = restrictedPlans.has(plan.name)
 
           return (
             <Card
               key={plan.name}
               className={`relative rounded-2xl border shadow-lg transition-all duration-300 ${
-                isBronze
-                  ? "bg-[#0B1224] text-white border-blue-500/40"
-                  : "bg-[#0B1224]/60 text-white/70 border-white/10"
+                isRestricted
+                  ? "bg-[#0B1224]/60 text-white/70 border-white/10 blur-[3px] opacity-65"
+                  : "bg-[#0B1224] text-white border-blue-500/40"
               }`}
             >
               {plan.badge && (
@@ -104,11 +105,11 @@ export default function PricingCardsLanding() {
                 </p>
 
                 <Button
-                  disabled={isDisabled}
+                  disabled={isRestricted}
                   className={`mt-4 w-full rounded-xl ${
-                    isBronze
-                      ? "bg-white text-black hover:bg-gray-200"
-                      : "bg-white/20 text-white/60 cursor-not-allowed"
+                    isRestricted
+                      ? "bg-white/20 text-white/60 cursor-not-allowed"
+                      : "bg-white text-black hover:bg-gray-200"
                   }`}
                 >
                   {plan.button}
@@ -121,7 +122,7 @@ export default function PricingCardsLanding() {
                     <li key={i} className="flex items-start gap-2">
                       <Check
                         className={`w-4 h-4 mt-1 ${
-                          isBronze ? "text-green-400" : "text-white/40"
+                          isRestricted ? "text-white/40" : "text-green-400"
                         }`}
                       />
                       <span>{feature}</span>

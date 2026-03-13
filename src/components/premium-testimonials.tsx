@@ -6,9 +6,9 @@ import { Quote, Star, ArrowLeft, ArrowRight, Sparkles } from 'lucide-react';
 
 const testimonials = [
   {
-    name: "Anita Rao",
+    name: "Charlotte Hughes",
     role: "Home Owner",
-    company: "Bangalore",
+    company: "Bristol",
     avatar:
       "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=150&h=150&fit=crop&crop=face",
     rating: 5,
@@ -21,9 +21,9 @@ const testimonials = [
     ],
   },
   {
-    name: "Rahul Mehta",
+    name: "James Thornton",
     role: "Founder",
-    company: "UrbanNest Constructions",
+    company: "Northfield Developments",
     avatar:
       "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop&crop=face",
     rating: 5,
@@ -36,9 +36,9 @@ const testimonials = [
     ],
   },
   {
-    name: "Neha Kapoor",
+    name: "Amelia Clarke",
     role: "Operations Head",
-    company: "ScaleUp Ventures",
+    company: "ScaleUp Ventures UK",
     avatar:
       "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&h=150&fit=crop&crop=face",
     rating: 5,
@@ -51,9 +51,9 @@ const testimonials = [
     ],
   },
   {
-    name: "Arjun Patel",
+    name: "Oliver Bennett",
     role: "Planning Consultant",
-    company: "Ahmedabad",
+    company: "Manchester",
     avatar:
       "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&h=150&fit=crop&crop=face",
     rating: 5,
@@ -66,9 +66,9 @@ const testimonials = [
     ],
   },
   {
-    name: "Pooja Iyer",
+    name: "Sophie Whitmore",
     role: "Personal Concierge Client",
-    company: "Hyderabad",
+    company: "Edinburgh",
     avatar:
       "https://images.unsplash.com/photo-1517841905240-472988babdf9?w=150&h=150&fit=crop&crop=face",
     rating: 5,

@@ -589,6 +589,7 @@ interface ServiceExpandPanelProps {
   index: number          
   mobile?: boolean
   compactLaptop?: boolean
+  disabled?: boolean
 }
 
 /* ================= GRID UTILS ================= */
@@ -691,6 +692,7 @@ export default function ServiceExpandPanel({
   index,
   mobile = false,
   compactLaptop = false,
+  disabled = false,
 }: ServiceExpandPanelProps) {
   const expandedPanelHeight = compactLaptop
     ? "clamp(25rem, 50vh, 33rem)"
@@ -865,7 +867,8 @@ const handleFormSubmit = () => {
           border border-white/10
           rounded-2xl
           overflow-hidden
-          ${!isExpanded && !mobile ? "cursor-pointer" : ""}
+          ${!isExpanded && !mobile && !disabled ? "cursor-pointer" : ""}
+          ${!isExpanded && !mobile && disabled ? "opacity-60 blur-[1.5px]" : ""}
           ${isExpanded ? "md:order-first xl:order-none md:scroll-mt-24" : ""}
           ${isExpanded
             ? "w-full xl:w-auto"
@@ -890,8 +893,11 @@ const handleFormSubmit = () => {
         {/* ================= COLLAPSED STATE ================= */}
         {!isExpanded && !mobile && (
           <button
-            onClick={onExpand}
-            className="absolute inset-0 flex items-center justify-center cursor-pointer"
+            onClick={disabled ? undefined : onExpand}
+            disabled={disabled}
+            className={`absolute inset-0 flex items-center justify-center ${
+              disabled ? "cursor-not-allowed" : "cursor-pointer"
+            }`}
           >
             <motion.span
               animate={{
@@ -906,7 +912,9 @@ const handleFormSubmit = () => {
                 repeat: Infinity,
                 delay: index * 0.10, // subtle stagger
               }}
-              className="font-bold text-white/50 uppercase tracking-[0.4em] text-xs xl:[writing-mode:vertical-rl] xl:rotate-180"
+              className={`font-bold text-white/50 uppercase tracking-[0.4em] text-xs xl:[writing-mode:vertical-rl] xl:rotate-180 ${
+                disabled ? "opacity-60" : ""
+              }`}
             >
               {service.shortTitle}
             </motion.span>
