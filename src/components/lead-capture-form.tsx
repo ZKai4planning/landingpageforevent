@@ -176,7 +176,7 @@ export const LeadCaptureForm = () => {
                 className="mt-1 h-4 w-4 rounded border-white/20 bg-black/20 accent-blue-400"
               />
               <span className="text-sm leading-relaxed text-white/72">
-                I agree to the{" "}
+                I agree to {" "}
                 <Link
                   href="/terms"
                   target="_blank"
@@ -205,7 +205,7 @@ export const LeadCaptureForm = () => {
               className="btn-1 relative inline-flex min-w-[12rem] items-center justify-center overflow-hidden rounded-[0.9rem] px-6 py-3 text-sm font-semibold disabled:cursor-not-allowed disabled:opacity-70"
             >
               <span className="relative z-10">
-                {isSubmitting ? "Submitting..." : "Send Details"}
+                {isSubmitting ? "Submitting..." : "submit"}
               </span>
             </button>
           </form>
