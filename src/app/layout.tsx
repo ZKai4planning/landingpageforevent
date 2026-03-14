@@ -3,6 +3,7 @@ import type { Metadata } from "next"
 import "./globals.css"
 import { Poppins } from "next/font/google"
 import { Analytics } from "@vercel/analytics/next"
+import { Toaster } from "react-hot-toast"
 const poppins = Poppins({
   subsets: ["latin"],
   weight: ["300", "400", "500", "600", "700"],
@@ -35,9 +36,19 @@ export default function RootLayout({
       </head>
 
       <body className={`${poppins.className} antialiased`}>
-
         {children}
-<Analytics />
+        <Toaster
+          position="top-right"
+          toastOptions={{
+            duration: 4000,
+            style: {
+              background: "#0f172a",
+              color: "#fff",
+              border: "1px solid rgba(148, 163, 184, 0.24)",
+            },
+          }}
+        />
+        <Analytics />
       </body>
     </html>
   )

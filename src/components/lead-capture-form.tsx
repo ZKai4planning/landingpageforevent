@@ -2,18 +2,30 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
+import toast from "react-hot-toast";
 
 type FormState = {
   name: string;
   email: string;
   mobile: string;
+  service: string;
   consent: boolean;
+};
+
+type LeadCaptureFormProps = {
+  sectionId?: string;
+  eyebrow?: string;
+  title?: string;
+  description?: string;
+  showIntro?: boolean;
+  singleColumn?: boolean;
 };
 
 const initialFormState: FormState = {
   name: "",
   email: "",
   mobile: "",
+  service: "",
   consent: false,
 };
 
@@ -22,23 +34,51 @@ const isValidUkMobile = (mobile: string) => {
   return /^(?:\+44|44|0)7\d{9}$/.test(normalizedMobile);
 };
 
-export const LeadCaptureForm = () => {
+const sanitizeMobileInput = (value: string) => {
+  const trimmedValue = value.trim();
+  const hasLeadingPlus = trimmedValue.startsWith("+");
+  const digitsOnly = value.replace(/\D/g, "");
+
+  if (hasLeadingPlus) {
+    return `+${digitsOnly.slice(0, 12)}`;
+  }
+
+  return digitsOnly.slice(0, 12);
+};
+
+export const LeadCaptureForm = ({
+  sectionId = "lead-form",
+  eyebrow,
+  title = "Request a call back",
+  description = "Leave your details and our team will get back to you to discuss planning, renovation, or construction support.",
+  showIntro = true,
+  singleColumn = false,
+}: LeadCaptureFormProps) => {
   const [formData, setFormData] = useState<FormState>(initialFormState);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
-  const [successMessage, setSuccessMessage] = useState("");
+
+  const updateFormData = (field: keyof FormState, value: string | boolean) => {
+    setErrorMessage("");
+    setFormData((current) => ({
+      ...current,
+      [field]: value,
+    }));
+  };
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setErrorMessage("");
-    setSuccessMessage("");
 
     if (
       !formData.name.trim() ||
       !formData.email.trim() ||
-      !formData.mobile.trim()
+      !formData.mobile.trim() ||
+      !formData.service.trim()
     ) {
-      setErrorMessage("Please fill in your name, email, and mobile number.");
+      setErrorMessage(
+        "Please fill in your name, email, mobile number, and required service."
+      );
       return;
     }
 
@@ -71,7 +111,7 @@ export const LeadCaptureForm = () => {
         throw new Error(result.message || "Failed to submit the form.");
       }
 
-      setSuccessMessage(
+      toast.success(
         "Thank you. Your details have been captured and we will contact you shortly."
       );
       setFormData(initialFormState);
@@ -88,7 +128,7 @@ export const LeadCaptureForm = () => {
 
   return (
     <section
-      id="lead-form"
+      id={sectionId}
       className="relative overflow-hidden bg-[#05070d] px-4 py-14 sm:px-6 sm:py-18"
     >
       <div className="absolute inset-0 opacity-40">
@@ -96,31 +136,52 @@ export const LeadCaptureForm = () => {
       </div>
 
       <div className="relative mx-auto max-w-6xl">
-        <div className="grid gap-6 rounded-[2rem] border border-white/10 bg-[linear-gradient(180deg,rgba(9,15,30,0.94),rgba(5,8,18,0.98))] p-5 shadow-[0_30px_80px_rgba(0,0,0,0.35)] sm:p-8 lg:grid-cols-[0.9fr_1.1fr] lg:p-10">
-          <div className="space-y-4">
-          
-            <h2 className="text-3xl font-bold text-white sm:text-4xl">
-              Request a call back
-            </h2>
-            <p className="max-w-xl text-sm leading-relaxed text-white/68 sm:text-base">
-              Leave your details and our team will get back to you to discuss
-              planning, renovation, or construction support.
-            </p>
-
-          </div>
+        <div
+          className={`rounded-[2rem] border border-white/10 bg-[linear-gradient(180deg,rgba(9,15,30,0.94),rgba(5,8,18,0.98))] p-5 shadow-[0_30px_80px_rgba(0,0,0,0.35)] sm:p-8 lg:p-10 ${
+            showIntro ? "grid gap-6 lg:grid-cols-[0.9fr_1.1fr]" : "mx-auto max-w-3xl"
+          }`}
+        >
+          {showIntro ? (
+            <div className="space-y-4">
+              <h2 className="text-3xl font-bold text-white sm:text-4xl">
+                {eyebrow ? (
+                  <span className="mb-4 block text-xs font-semibold uppercase tracking-[0.28em] text-blue-200/80 sm:text-sm">
+                    {eyebrow}
+                  </span>
+                ) : null}
+                {title}
+              </h2>
+              <p className="max-w-xl text-sm leading-relaxed text-white/68 sm:text-base">
+                {description}
+              </p>
+            </div>
+          ) : null}
 
           <form onSubmit={handleSubmit} className="space-y-4">
-            <div className="grid gap-4 sm:grid-cols-2">
-              <label className="space-y-2 sm:col-span-2">
+            {!showIntro ? (
+              <div className="space-y-3 text-center">
+                <h2 className="text-3xl font-bold text-white sm:text-4xl">
+                  {eyebrow ? (
+                    <span className="mb-4 block text-xs font-semibold uppercase tracking-[0.28em] text-blue-200/80 sm:text-sm">
+                      {eyebrow}
+                    </span>
+                  ) : null}
+                  {title}
+                </h2>
+                <p className="mx-auto max-w-2xl text-sm leading-relaxed text-white/68 sm:text-base">
+                  {description}
+                </p>
+              </div>
+            ) : null}
+
+            <div className={`grid gap-4 ${singleColumn ? "" : "sm:grid-cols-2"}`}>
+              <label className={`space-y-2 ${singleColumn ? "" : "sm:col-span-2"}`}>
                 <span className="text-sm font-medium text-white/85">Name</span>
                 <input
                   type="text"
                   value={formData.name}
                   onChange={(event) =>
-                    setFormData((current) => ({
-                      ...current,
-                      name: event.target.value,
-                    }))
+                    updateFormData("name", event.target.value)
                   }
                   className="w-full rounded-[1rem] border border-white/12 bg-black/20 px-4 py-3 text-white outline-none transition placeholder:text-white/30 focus:border-blue-300/40"
                   placeholder="Your full name"
@@ -133,10 +194,7 @@ export const LeadCaptureForm = () => {
                   type="email"
                   value={formData.email}
                   onChange={(event) =>
-                    setFormData((current) => ({
-                      ...current,
-                      email: event.target.value,
-                    }))
+                    updateFormData("email", event.target.value)
                   }
                   className="w-full rounded-[1rem] border border-white/12 bg-black/20 px-4 py-3 text-white outline-none transition placeholder:text-white/30 focus:border-blue-300/40"
                   placeholder="you@example.com"
@@ -145,21 +203,37 @@ export const LeadCaptureForm = () => {
 
               <label className="space-y-2">
                 <span className="text-sm font-medium text-white/85">
+                  Required Service
+                </span>
+                <input
+                  type="text"
+                  value={formData.service}
+                  onChange={(event) =>
+                    updateFormData("service", event.target.value)
+                  }
+                  className="w-full rounded-[1rem] border border-white/12 bg-black/20 px-4 py-3 text-white outline-none transition placeholder:text-white/30 focus:border-blue-300/40"
+                  placeholder="Describe the service you need"
+                />
+              </label>
+
+              <label className={`space-y-2 ${singleColumn ? "" : "sm:col-span-2"}`}>
+                <span className="text-sm font-medium text-white/85">
                   Mobile Number
                 </span>
                 <input
                   type="tel"
+                  inputMode="tel"
                   value={formData.mobile}
                   onChange={(event) =>
-                    setFormData((current) => ({
-                      ...current,
-                      mobile: event.target.value,
-                    }))
+                    updateFormData(
+                      "mobile",
+                      sanitizeMobileInput(event.target.value)
+                    )
                   }
+                  maxLength={13}
                   className="w-full rounded-[1rem] border border-white/12 bg-black/20 px-4 py-3 text-white outline-none transition placeholder:text-white/30 focus:border-blue-300/40"
-                  placeholder="+44 7777 888 999"
+                  placeholder="+447777888999"
                 />
-               
               </label>
             </div>
 
@@ -168,10 +242,7 @@ export const LeadCaptureForm = () => {
                 type="checkbox"
                 checked={formData.consent}
                 onChange={(event) =>
-                  setFormData((current) => ({
-                    ...current,
-                    consent: event.target.checked,
-                  }))
+                  updateFormData("consent", event.target.checked)
                 }
                 className="mt-1 h-4 w-4 rounded border-white/20 bg-black/20 accent-blue-400"
               />
@@ -190,12 +261,6 @@ export const LeadCaptureForm = () => {
             {errorMessage ? (
               <p className="rounded-[1rem] border border-red-400/20 bg-red-500/10 px-4 py-3 text-sm text-red-100">
                 {errorMessage}
-              </p>
-            ) : null}
-
-            {successMessage ? (
-              <p className="rounded-[1rem] border border-emerald-400/20 bg-emerald-500/10 px-4 py-3 text-sm text-emerald-100">
-                {successMessage}
               </p>
             ) : null}
 

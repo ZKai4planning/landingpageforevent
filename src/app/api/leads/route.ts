@@ -1,10 +1,11 @@
-import { createCipheriv, randomBytes } from "node:crypto";
+import { createCipheriv, createDecipheriv, randomBytes } from "node:crypto";
 import { NextResponse } from "next/server";
 
 type LeadPayload = {
   name?: string;
   email?: string;
   mobile?: string;
+  service?: string;
   consent?: boolean;
 };
 
@@ -12,8 +13,14 @@ type StoredLead = {
   name: string;
   email: string;
   mobile: string;
+  service: string;
   consent: boolean;
   submittedAt: string;
+};
+
+type ExistingLeadRecord = {
+  email?: string | null;
+  mobile?: string | null;
 };
 
 const supabaseUrl =
@@ -70,6 +77,79 @@ function encryptValue(value: string) {
   return Buffer.concat([iv, authTag, encrypted]).toString("base64");
 }
 
+function decryptValue(value: string) {
+  const key = getEncryptionKey();
+  const payload = Buffer.from(value, "base64");
+  const iv = payload.subarray(0, 12);
+  const authTag = payload.subarray(12, 28);
+  const encrypted = payload.subarray(28);
+  const decipher = createDecipheriv("aes-256-gcm", key, iv);
+
+  decipher.setAuthTag(authTag);
+
+  return Buffer.concat([
+    decipher.update(encrypted),
+    decipher.final(),
+  ]).toString("utf8");
+}
+
+async function findDuplicateLead(email: string, mobile: string) {
+  if (!supabaseUrl) {
+    throw new Error(
+      "Supabase is not configured. Add SUPABASE_URL to .env.local."
+    );
+  }
+
+  if (!supabaseServiceRoleKey) {
+    throw new Error(
+      "Supabase is not configured. Add SUPABASE_SERVICE_ROLE_KEY to .env.local."
+    );
+  }
+
+  const response = await fetch(
+    `${supabaseUrl}/rest/v1/${supabaseLeadsTable}?select=email,mobile`,
+    {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        apikey: supabaseServiceRoleKey,
+        Authorization: `Bearer ${supabaseServiceRoleKey}`,
+      },
+      cache: "no-store",
+    }
+  );
+
+  if (!response.ok) {
+    const errorText = await response.text();
+    throw new Error(
+      errorText || "Unable to verify existing lead submissions."
+    );
+  }
+
+  const existingLeads = (await response.json()) as ExistingLeadRecord[];
+  const normalizedEmail = email.toLowerCase();
+  const normalizedMobile = normalizeMobile(mobile);
+
+  for (const lead of existingLeads) {
+    try {
+      const decryptedEmail = lead.email ? decryptValue(lead.email) : "";
+      const decryptedMobile = lead.mobile ? decryptValue(lead.mobile) : "";
+
+      if (decryptedEmail.toLowerCase() === normalizedEmail) {
+        return "email";
+      }
+
+      if (normalizeMobile(decryptedMobile) === normalizedMobile) {
+        return "mobile";
+      }
+    } catch {
+      continue;
+    }
+  }
+
+  return null;
+}
+
 async function saveLeadToSupabase(lead: StoredLead) {
   if (!supabaseUrl) {
     throw new Error(
@@ -104,6 +184,7 @@ async function saveLeadToSupabase(lead: StoredLead) {
       name: encryptValue(lead.name),
       email: encryptValue(lead.email),
       mobile: encryptValue(lead.mobile),
+      service: encryptValue(lead.service),
       consent: lead.consent,
       submitted_at: lead.submittedAt,
     }),
@@ -124,13 +205,17 @@ export async function POST(request: Request) {
     const payload = (await request.json()) as LeadPayload;
 
     const name = payload.name?.trim() ?? "";
-    const email = payload.email?.trim() ?? "";
+    const email = payload.email?.trim().toLowerCase() ?? "";
     const mobile = payload.mobile?.trim() ?? "";
+    const service = payload.service?.trim() ?? "";
     const consent = payload.consent === true;
 
-    if (!name || !email || !mobile) {
+    if (!name || !email || !mobile || !service) {
       return NextResponse.json(
-        { message: "Name, email, and mobile number are required." },
+        {
+          message:
+            "Name, email, mobile number, and required service are required.",
+        },
         { status: 400 }
       );
     }
@@ -159,10 +244,33 @@ export async function POST(request: Request) {
       );
     }
 
+    const duplicateLeadField = await findDuplicateLead(email, mobile);
+
+    if (duplicateLeadField === "email") {
+      return NextResponse.json(
+        {
+          message:
+            "A user already exists with this email. Please sign up with another email.",
+        },
+        { status: 409 }
+      );
+    }
+
+    if (duplicateLeadField === "mobile") {
+      return NextResponse.json(
+        {
+          message:
+            "A user already exists with this mobile number. Please sign up with another mobile number.",
+        },
+        { status: 409 }
+      );
+    }
+
     const nextLead: StoredLead = {
       name,
       email,
       mobile,
+      service,
       consent,
       submittedAt: new Date().toISOString(),
     };
