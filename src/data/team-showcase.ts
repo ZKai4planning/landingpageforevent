@@ -67,7 +67,7 @@ export const teamShowcaseMembers = [
     quote:
       "Supports project planning, client coordination, and delivery oversight so each residential renovation moves smoothly from early decisions to final completion.",
     name: "Mike",
-    designation: "Development Support",
+    designation: " Project Development Lead",
     src: "/Team2.png",
     roleSummary:
       "Works alongside the founder to coordinate timelines, site progress, and practical decision-making across high-detail residential renovation projects.",
