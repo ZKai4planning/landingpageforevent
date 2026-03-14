@@ -2,7 +2,7 @@ export const teamShowcaseMembers = [
   {
     quote:
       "From heritage strip-out to the final dressed interior, each stage is handled with a strong eye for restoration detail, bespoke joinery, and high-end residential finish.",
-    name: "Zafet",
+    name: "Zafer Khan",
     designation: "Founder, Ai4Planning",
     src: "/Team1.png",
     roleSummary:
@@ -66,7 +66,7 @@ export const teamShowcaseMembers = [
   {
     quote:
       "Supports project planning, client coordination, and delivery oversight so each residential renovation moves smoothly from early decisions to final completion.",
-    name: "Project Delivery Lead",
+    name: "Mike",
     designation: "Development Support",
     src: "/Team2.png",
     roleSummary:
