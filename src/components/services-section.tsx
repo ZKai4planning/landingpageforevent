@@ -349,8 +349,7 @@ export default function ServicesSection() {
             Our Services
           </h2>
           <p className="mx-auto mt-4 max-w-4xl text-lg leading-relaxed text-white/65 sm:text-xl">
-            Project Management &amp; Consultancy Marketplace - A curated service
-            connecting clients with experts across a broad range of industries.
+            Explore our full range of planning and construction services - from AI-powered toolkits and strategic guidance to hands-on compliance support and integrated design-build solutions.
           </p>
         </div>
       )}

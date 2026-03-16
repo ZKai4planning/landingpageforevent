@@ -1,6 +1,7 @@
 "use client"
 
 import { motion } from "framer-motion"
+import { AlertTriangle } from "lucide-react"
 
 const heroText =
   "Turning complexity into clarity. Own your planning journey."
@@ -10,7 +11,7 @@ const whatsappUrl =
 
 export default function HomeHero() {
   return (
-    <section className="relative w-full min-h-[100svh] overflow-hidden">
+    <section className="relative w-full min-h-svh overflow-hidden">
       <div className="absolute inset-0">
         <video
           autoPlay
@@ -25,7 +26,7 @@ export default function HomeHero() {
         <div className="absolute inset-0 bg-black/40" />
       </div>
 
-      <div className="relative z-10 flex min-h-[100svh] items-center justify-center px-4 py-20 text-center sm:px-6 sm:py-24 md:px-8 md:py-28 lg:px-10 xl:py-32">
+      <div className="relative z-10 -mt-24 flex min-h-svh items-center justify-center px-4 py-20 text-center sm:px-6 sm:py-24 md:px-8 md:py-28 lg:px-10 xl:py-32">
         <div className="w-full max-w-6xl">
           <motion.div
             initial={{ opacity: 0, y: 10 }}
@@ -38,6 +39,24 @@ export default function HomeHero() {
             className="mb-5 inline-flex items-center rounded-full border border-blue-300/40 bg-blue-500/15 px-6 py-2 text-sm font-semibold tracking-[0.2em] text-blue-100 sm:mb-6 sm:px-8 sm:py-2.5 sm:text-base"
           >
              Pre Launch
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{
+              duration: 0.5,
+              ease: "easeOut",
+              delay: 5.4,
+            }}
+            className="mx-auto mb-10 flex max-w-4xl flex-col gap-4 rounded-2xl border border-blue-300/20 bg-blue-500/10 px-5 py-4 text-left text-white/90 shadow-[0_0_40px_rgba(59,130,246,0.25)] backdrop-blur sm:flex-row sm:items-start sm:gap-5"
+          >
+            <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-blue-500/30 text-blue-100 shadow-[0_0_24px_rgba(59,130,246,0.45)] sm:h-14 sm:w-14">
+              <AlertTriangle className="h-7 w-7 sm:h-8 sm:w-8" />
+            </div>
+            <p className="text-sm leading-relaxed sm:text-base">
+              Pre-launch notice - This demonstration site is in beta and doesn&apos;t yet include all features. Some functions are only placeholders for the final release. Stay tuned for our full launch with complete functionality!
+            </p>
           </motion.div>
 
           <motion.h1
