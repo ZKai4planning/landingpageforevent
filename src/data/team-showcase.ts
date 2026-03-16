@@ -1,7 +1,7 @@
 export const teamShowcaseMembers = [
   {
     quote:
-      "From heritage strip-out to the final dressed interior, each stage is handled with a strong eye for restoration detail, bespoke joinery, and high-end residential finish.",
+      "Zafer Khan brings a unique blend of property expertise, regulatory insight and technology experience to Ai4Planning. With a strong background in compliance and technology within the financial services industry, he honed his ability to navigate complex regulations and implement efficient digital solutions. Combined with his hands‑on experience in property projects and a keen understanding of planning challenges, this skillset enables him to bridge the gap between planning, compliance and technology. His focus is on leveraging AI to simplify and modernise the planning process while upholding high standards for homeowners and professionals alike.",
     name: "Zafer Khan",
     designation: "Founder, Ai4Planning",
     src: "/Team1.png",
@@ -65,7 +65,7 @@ export const teamShowcaseMembers = [
   },
   {
     quote:
-      "Supports project planning, client coordination, and delivery oversight so each residential renovation moves smoothly from early decisions to final completion.",
+      "Mike is a serial entrepreneur and qualified mechanical engineer whose career spans sales, marketing and project management.  Based in Norfolk, he has spent more than 20 years in property development—leading new builds, renovations and design projects while navigating planning, building control and compliance.  He champions sustainability, integrating heat pumps, solar power and other technologies to ensure every project meets modern standards of efficiency and quality.",
     name: "Mike",
     designation: " Project Development Lead",
     src: "/Team2.png",

@@ -266,7 +266,7 @@ export const LeadCaptureForm = ({
 
             <button
               type="submit"
-              disabled={isSubmitting}
+              disabled={isSubmitting || !formData.consent}
               className="btn-1 relative inline-flex min-w-[12rem] items-center justify-center overflow-hidden rounded-[0.9rem] px-6 py-3 text-sm font-semibold disabled:cursor-not-allowed disabled:opacity-70"
             >
               <span className="relative z-10">

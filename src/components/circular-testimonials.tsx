@@ -207,8 +207,8 @@ export const CircularTestimonials = ({
   }
 
   return (
-    <div className="w-full max-w-[56rem] p-5 sm:p-6 md:p-8">
-      <div className="grid gap-10 sm:gap-14 md:grid-cols-2 md:gap-20">
+    <div className="w-full max-w-[70rem] p-5 sm:p-6 md:p-8">
+      <div className="grid gap-10 sm:gap-14 md:grid-cols-[24rem_minmax(0,1fr)] md:gap-20">
         {/* Images */}
         <div
           className="relative h-64 w-full perspective-[1000px] sm:h-80 md:h-96"
