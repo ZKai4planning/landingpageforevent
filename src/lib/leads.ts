@@ -163,11 +163,13 @@ async function fetchFromSupabase<T>(path: string, init?: RequestInit) {
     throw new Error(errorText || "Supabase request failed.");
   }
 
-  if (response.status === 204) {
+  const responseText = await response.text();
+
+  if (!responseText.trim()) {
     return null as T;
   }
 
-  return (await response.json()) as T;
+  return JSON.parse(responseText) as T;
 }
 
 export async function findDuplicateLead(email: string, mobile: string) {
