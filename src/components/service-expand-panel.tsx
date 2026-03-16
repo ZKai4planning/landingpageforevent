@@ -640,7 +640,7 @@ const FEATURE_ICON_MAP: Record<string, string> = {
   "integrated planning & construction": "engineering",
   "construction management support": "handyman",
   "programme & delivery coordination": "event",
-  "single-point delivery responsibility": "person_pin_circle",
+  
   "curated consultant marketplace": "storefront",
   "task-based consultancy services": "task",
   "flexible project management support": "assignment_ind",

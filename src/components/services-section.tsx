@@ -163,7 +163,7 @@ const services: Service[] = [
       { title: "Integrated planning & construction" },
       { title: "Construction management support" },
       { title: "Programme & delivery coordination" },
-      { title: "Single-point delivery responsibility" },
+     
     ],
     cta: "Select & Apply",
     label: "Clients with consented projects ",

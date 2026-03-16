@@ -10,8 +10,8 @@ export default function SignupPage() {
         <LeadCaptureForm
           sectionId="signup-form"
           eyebrow="Sign Up"
-          title="Tell us which service you need"
-          description="Choose your required service, share your contact details, and our team will get back to you shortly."
+          title="Ai4Planning"
+          description="Choose your required service, share your contact details, and the Ai4Planning team will get back to you shortly."
           showIntro={false}
           singleColumn
         />
