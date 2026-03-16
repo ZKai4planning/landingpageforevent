@@ -38,7 +38,7 @@ export default function HomeHero() {
           <motion.div
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, ease: "easeOut", delay: 0.4 }}
+            transition={{ duration: 0.5, ease: "easeOut", delay: 5.2 }}
             className="mb-5 inline-flex items-center rounded-full border border-blue-300/40 bg-blue-500/15 px-5 py-2 text-xs font-semibold tracking-[0.2em] text-blue-100 sm:text-sm md:text-base"
           >
             Pre Launch
@@ -48,7 +48,7 @@ export default function HomeHero() {
           <motion.div
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, ease: "easeOut", delay: 0.6 }}
+            transition={{ duration: 0.5, ease: "easeOut", delay: 5.4 }}
             className="mx-auto mb-8 flex max-w-3xl flex-col gap-4 rounded-xl border border-blue-300/20 bg-blue-500/10 p-4 text-left text-white/90 shadow-lg backdrop-blur sm:flex-row sm:items-start sm:gap-4"
           >
             <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-blue-500/30 text-blue-100 sm:h-12 sm:w-12">
@@ -62,9 +62,9 @@ export default function HomeHero() {
 
           {/* Title */}
           <motion.h1
-            initial={{ scale: 0.7, opacity: 0 }}
+            initial={{ scale: 0.25, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
-            transition={{ duration: 1, ease: "easeOut", delay: 0.8 }}
+            transition={{ duration: 1.6, ease: "easeOut", delay: 5.6 }}
             className="mb-6 font-bold leading-[0.95] tracking-tight text-white
             text-[clamp(2.5rem,9vw,12rem)]"
           >
@@ -79,8 +79,8 @@ export default function HomeHero() {
               hidden: {},
               visible: {
                 transition: {
-                  staggerChildren: 0.05,
-                  delayChildren: 1.2,
+                  staggerChildren: 0.06,
+                  delayChildren: 7.3,
                 },
               },
             }}
@@ -91,11 +91,12 @@ export default function HomeHero() {
               <motion.span
                 key={index}
                 variants={{
-                  hidden: { opacity: 0, y: 16 },
+                  hidden: { opacity: 0, y: 20 },
                   visible: {
                     opacity: 1,
                     y: 0,
-                    transition: { duration: 0.35 },
+                    transition: { duration: 0.4, ease: "easeOut" },
+
                   },
                 }}
               >
@@ -106,9 +107,11 @@ export default function HomeHero() {
 
           {/* Buttons */}
           <motion.div
-            initial={{ opacity: 0, y: 25 }}
+            initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 1.6 }}
+            transition={{ duration: 0.8,
+              ease: "easeOut",
+               delay: 8.6 }}
             className="mt-8 flex flex-col items-center gap-3 sm:flex-row sm:justify-center sm:gap-4"
           >
 
