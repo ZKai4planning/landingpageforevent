@@ -65,8 +65,7 @@ export default function HomeHero() {
             initial={{ scale: 0.25, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
             transition={{ duration: 1.6, ease: "easeOut", delay: 5.6 }}
-            className="mb-6 font-bold leading-[0.95] tracking-tight text-white
-            text-[clamp(2.5rem,9vw,12rem)]"
+            className="mb-6 font-bold leading-[0.95] tracking-tight text-white text-[clamp(2.5rem,9vw,12rem)]"
           >
             Ai4Planning
           </motion.h1>
@@ -84,8 +83,7 @@ export default function HomeHero() {
                 },
               },
             }}
-            className="mx-auto flex max-w-2xl flex-wrap justify-center gap-x-2 text-white/90
-            text-[clamp(1rem,2.5vw,1.7rem)] font-medium leading-relaxed"
+            className="mx-auto flex max-w-2xl flex-wrap justify-center gap-x-2 text-white/90 text-[clamp(1rem,2.5vw,1.7rem)] font-medium leading-relaxed"
           >
             {heroText.split(" ").map((word, index) => (
               <motion.span
@@ -109,9 +107,11 @@ export default function HomeHero() {
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8,
+            transition={{
+              duration: 0.8,
               ease: "easeOut",
-               delay: 8.6 }}
+              delay: 8.6
+            }}
             className="mt-8 flex flex-col items-center gap-3 sm:flex-row sm:justify-center sm:gap-4"
           >
 
@@ -131,7 +131,7 @@ export default function HomeHero() {
               }}
               className="w-full rounded-sm border-2 border-white bg-white/10 px-6 py-3 text-sm text-white hover:bg-white/20 sm:w-auto sm:min-w-[12rem]"
             >
-              Let's Talk
+              Let&apos;s Talk
             </motion.button>
 
           </motion.div>

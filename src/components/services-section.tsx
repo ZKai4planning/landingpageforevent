@@ -159,14 +159,11 @@ const services: Service[] = [
     description:
       "Design-and-build services post-consent; integrated planning and construction management.",
     features: [
-      {
-         title: " design & build"
-      }
+      { title: "Design & build" },
       { title: "Post-consent design & build" },
       { title: "Integrated planning & construction" },
       { title: "Construction management support" },
       { title: "Programme & delivery coordination" },
-     
     ],
     cta: "Select & Apply",
     label: "Clients with consented projects ",
