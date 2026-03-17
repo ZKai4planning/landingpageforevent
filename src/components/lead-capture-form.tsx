@@ -6,6 +6,7 @@ import toast from "react-hot-toast";
 
 type FormState = {
   name: string;
+  companyName: string;
   email: string;
   mobile: string;
   service: string;
@@ -23,6 +24,7 @@ type LeadCaptureFormProps = {
 
 const initialFormState: FormState = {
   name: "",
+  companyName: "",
   email: "",
   mobile: "",
   service: "",
@@ -185,6 +187,21 @@ export const LeadCaptureForm = ({
                   }
                   className="w-full rounded-[1rem] border border-white/12 bg-black/20 px-4 py-3 text-white outline-none transition placeholder:text-white/30 focus:border-blue-300/40"
                   placeholder="Your full name"
+                />
+              </label>
+
+              <label className="space-y-2">
+                <span className="text-sm font-medium text-white/85">
+                  Company Name (Optional)
+                </span>
+                <input
+                  type="text"
+                  value={formData.companyName}
+                  onChange={(event) =>
+                    updateFormData("companyName", event.target.value)
+                  }
+                  className="w-full rounded-[1rem] border border-white/12 bg-black/20 px-4 py-3 text-white outline-none transition placeholder:text-white/30 focus:border-blue-300/40"
+                  placeholder="Your company or organisation"
                 />
               </label>
 

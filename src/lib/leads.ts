@@ -2,6 +2,7 @@ import { createCipheriv, createDecipheriv, randomBytes } from "node:crypto";
 
 export type LeadPayload = {
   name?: string;
+  companyName?: string;
   email?: string;
   mobile?: string;
   service?: string;
@@ -10,6 +11,7 @@ export type LeadPayload = {
 
 export type StoredLead = {
   name: string;
+  companyName?: string;
   email: string;
   mobile: string;
   service: string;
@@ -25,6 +27,7 @@ type ExistingLeadRecord = {
 type SupabaseLeadRecord = {
   id?: number | string | null;
   name?: string | null;
+  company?: string | null;
   email?: string | null;
   mobile?: string | null;
   service?: string | null;
@@ -35,6 +38,7 @@ type SupabaseLeadRecord = {
 export type DecryptedLeadRecord = {
   id: number | string | null;
   name: string;
+  companyName: string;
   email: string;
   mobile: string;
   service: string;
@@ -144,6 +148,13 @@ export function decryptValue(value: string) {
   ]).toString("utf8");
 }
 
+function isMissingCompanyNameColumnError(error: unknown) {
+  return (
+    error instanceof Error &&
+    error.message.toLowerCase().includes("company")
+  );
+}
+
 async function fetchFromSupabase<T>(path: string, init?: RequestInit) {
   assertSupabaseConfig();
 
@@ -200,20 +211,39 @@ export async function findDuplicateLead(email: string, mobile: string) {
 }
 
 export async function saveLeadToSupabase(lead: StoredLead) {
-  await fetchFromSupabase<null>(supabaseLeadsTable, {
-    method: "POST",
-    headers: {
-      Prefer: "return=minimal",
-    },
-    body: JSON.stringify({
-      name: encryptValue(lead.name),
-      email: encryptValue(lead.email),
-      mobile: encryptValue(lead.mobile),
-      service: encryptValue(lead.service),
-      consent: lead.consent,
-      submitted_at: lead.submittedAt,
-    }),
-  });
+  const basePayload = {
+    name: encryptValue(lead.name),
+    email: encryptValue(lead.email),
+    mobile: encryptValue(lead.mobile),
+    service: encryptValue(lead.service),
+    consent: lead.consent,
+    submitted_at: lead.submittedAt,
+  };
+
+  try {
+    await fetchFromSupabase<null>(supabaseLeadsTable, {
+      method: "POST",
+      headers: {
+        Prefer: "return=minimal",
+      },
+      body: JSON.stringify({
+        ...basePayload,
+        ...(lead.companyName ? { company: encryptValue(lead.companyName) } : {}),
+      }),
+    });
+  } catch (error) {
+    if (!isMissingCompanyNameColumnError(error)) {
+      throw error;
+    }
+
+    await fetchFromSupabase<null>(supabaseLeadsTable, {
+      method: "POST",
+      headers: {
+        Prefer: "return=minimal",
+      },
+      body: JSON.stringify(basePayload),
+    });
+  }
 
   return true;
 }
@@ -244,35 +274,49 @@ export async function fetchDecryptedLeadsPage({
   const fetchPage = async (pageNumber: number) => {
     const rangeStart = (pageNumber - 1) * safePageSize;
     const rangeEnd = rangeStart + safePageSize - 1;
-    const response = await fetch(
-      `${supabaseUrl}/rest/v1/${supabaseLeadsTable}?select=id,name,email,mobile,service,consent,submitted_at&order=submitted_at.desc`,
-      {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          apikey: supabaseServiceRoleKey as string,
-          Authorization: `Bearer ${supabaseServiceRoleKey}`,
-          Prefer: "count=exact",
-          Range: `${rangeStart}-${rangeEnd}`,
-        },
-        cache: "no-store",
+    const requestPage = async (selectFields: string) => {
+      const response = await fetch(
+        `${supabaseUrl}/rest/v1/${supabaseLeadsTable}?select=${selectFields}&order=submitted_at.desc`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            apikey: supabaseServiceRoleKey as string,
+            Authorization: `Bearer ${supabaseServiceRoleKey}`,
+            Prefer: "count=exact",
+            Range: `${rangeStart}-${rangeEnd}`,
+          },
+          cache: "no-store",
+        }
+      );
+
+      if (!response.ok) {
+        const errorText = await response.text();
+        throw new Error(errorText || "Supabase request failed.");
       }
-    );
 
-    if (!response.ok) {
-      const errorText = await response.text();
-      throw new Error(errorText || "Supabase request failed.");
-    }
+      const contentRange = response.headers.get("content-range");
+      const totalCount = contentRange
+        ? Number(contentRange.split("/")[1] ?? 0) || 0
+        : 0;
 
-    const contentRange = response.headers.get("content-range");
-    const totalCount = contentRange
-      ? Number(contentRange.split("/")[1] ?? 0) || 0
-      : 0;
-
-    return {
-      totalCount,
-      rows: (await response.json()) as SupabaseLeadRecord[],
+      return {
+        totalCount,
+        rows: (await response.json()) as SupabaseLeadRecord[],
+      };
     };
+
+    try {
+      return await requestPage(
+        "id,name,company,email,mobile,service,consent,submitted_at"
+      );
+    } catch (error) {
+      if (!isMissingCompanyNameColumnError(error)) {
+        throw error;
+      }
+
+      return requestPage("id,name,email,mobile,service,consent,submitted_at");
+    }
   };
 
   let result = await fetchPage(safePage);
@@ -290,6 +334,9 @@ export async function fetchDecryptedLeadsPage({
         {
           id: lead.id ?? null,
           name: lead.name ? decryptValue(lead.name) : "",
+          companyName: lead.company
+            ? decryptValue(lead.company)
+            : "Individual",
           email: lead.email ? decryptValue(lead.email) : "",
           mobile: lead.mobile ? decryptValue(lead.mobile) : "",
           service: lead.service ? decryptValue(lead.service) : "",

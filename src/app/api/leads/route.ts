@@ -8,14 +8,27 @@ import {
   saveLeadToSupabase,
 } from "@/lib/leads";
 
+function toTitleCase(value: string) {
+  return value
+    .trim()
+    .replace(/\s+/g, " ")
+    .toLowerCase()
+    .replace(/(^|[\s-/])([a-z])/g, (_, prefix: string, char: string) => {
+      return `${prefix}${char.toUpperCase()}`;
+    });
+}
+
 export async function POST(request: Request) {
   try {
     const payload = (await request.json()) as LeadPayload;
 
-    const name = payload.name?.trim() ?? "";
+    const name = payload.name ? toTitleCase(payload.name) : "";
+    const companyName = payload.companyName
+      ? toTitleCase(payload.companyName)
+      : "Individual";
     const email = payload.email?.trim().toLowerCase() ?? "";
     const mobile = payload.mobile?.trim() ?? "";
-    const service = payload.service?.trim() ?? "";
+    const service = payload.service ? toTitleCase(payload.service) : "";
     const consent = payload.consent === true;
 
     if (!name || !email || !mobile || !service) {
@@ -76,6 +89,7 @@ export async function POST(request: Request) {
 
     const nextLead: StoredLead = {
       name,
+      companyName,
       email,
       mobile,
       service,

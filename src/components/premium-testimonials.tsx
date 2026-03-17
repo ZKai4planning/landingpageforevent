@@ -349,7 +349,7 @@ const fadeInUp: Variants = {
                           <img 
                             src={testimonials[currentIndex].avatar} 
                             alt={testimonials[currentIndex].name}
-                            className="w-full h-full object-cover"
+                            className="h-full w-full object-cover blur-[5px]"
                           />
                           {/* Dark overlay on avatar */}
                           <motion.div
@@ -473,7 +473,7 @@ const fadeInUp: Variants = {
         </div>
 
         {/* Stats Section */}
-        <motion.div 
+        {/* <motion.div 
           className="grid grid-cols-2 md:grid-cols-4 gap-8"
           variants={staggerContainer}
         >
@@ -501,7 +501,7 @@ const fadeInUp: Variants = {
               </div>
             </motion.div>
           ))}
-        </motion.div>
+        </motion.div> */}
       </motion.div>
     </section>
   );

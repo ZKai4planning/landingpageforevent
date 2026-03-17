@@ -8,6 +8,7 @@ import { LoginHeader } from "@/components/login-header";
 type SignupLead = {
   id: number | string | null;
   name: string;
+  companyName: string;
   email: string;
   mobile: string;
   service: string;
@@ -279,6 +280,7 @@ export default function SignupsPage() {
                       <thead className="bg-white/5 text-[11px] uppercase tracking-[0.22em] text-white/55">
                         <tr>
                           <th className="px-4 py-4 font-semibold">Name</th>
+                          <th className="px-4 py-4 font-semibold">Company</th>
                           <th className="px-4 py-4 font-semibold">Email</th>
                           <th className="px-4 py-4 font-semibold">Mobile</th>
                           <th className="px-4 py-4 font-semibold">Service</th>
@@ -294,6 +296,9 @@ export default function SignupsPage() {
                           >
                             <td className="px-4 py-4 font-medium text-white">
                               {lead.name}
+                            </td>
+                            <td className="px-4 py-4 min-w-[12rem]">
+                              {lead.companyName || "-"}
                             </td>
                             <td className="px-4 py-4 break-all">{lead.email}</td>
                             <td className="px-4 py-4 whitespace-nowrap">

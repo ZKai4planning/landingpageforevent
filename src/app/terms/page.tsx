@@ -17,7 +17,8 @@ export default function TermsPage() {
           Your submitted details may be stored securely for the purpose of
           responding to your request, arranging follow-up communication, and
           providing services related to planning, renovation, or construction
-          support.
+          support. In line with GDPR principles, Ai4Planning does not sell your
+          personal data to third parties.
         </p>
         <p className="mt-4 text-sm leading-relaxed text-white/75 sm:text-base">
           Ai4Planning reserves the right to update these terms at any time. If
