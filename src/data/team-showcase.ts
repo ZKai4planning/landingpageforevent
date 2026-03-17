@@ -155,7 +155,7 @@ He oversees end-to-end workflows, combining AI-driven processes with the Ai fram
 With a strong focus on customer outcomes, Ritesh ensures that every interaction is handled with clarity, responsiveness, and care, giving clients confidence that their planning journey is in capable and reliable hands.`,
     name: "Ritesh",
     designation: "Head of Operations & Customer Engagement",
-    src: "/Ritesh.png",
+    src: "/Ritesh2.png",
     roleSummary:
       "Manages end-to-end operations, customer workflows, and service delivery across the platform.",
     focusAreas: [
