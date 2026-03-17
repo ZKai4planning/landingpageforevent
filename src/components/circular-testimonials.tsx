@@ -77,7 +77,7 @@ export const CircularTestimonials = ({
   const [hoverPrev, setHoverPrev] = useState(false);
   const [hoverNext, setHoverNext] = useState(false);
   const [containerWidth, setContainerWidth] = useState(1200);
-  const [isExpanded, setIsExpanded] = useState(false);
+  const [expandedIndex, setExpandedIndex] = useState<number | null>(null);
 
   // Refs
   const imageContainerRef = useRef<HTMLDivElement>(null);
@@ -85,11 +85,16 @@ export const CircularTestimonials = ({
   const contentRef = useRef<HTMLDivElement>(null);
 
   const testimonialsLength = useMemo(() => testimonials.length, [testimonials]);
+  const displayIndex = useMemo(() => {
+    if (testimonialsLength === 0) return 0;
+    return ((activeIndex % testimonialsLength) + testimonialsLength) % testimonialsLength;
+  }, [activeIndex, testimonialsLength]);
   const activeTestimonial = useMemo(
-    () => testimonials[activeIndex],
-    [activeIndex, testimonials]
+    () => testimonials[displayIndex],
+    [displayIndex, testimonials]
   );
   const showNavigation = testimonialsLength > 1;
+  const isExpanded = expandedIndex === displayIndex;
 
   // Helper to clear autoplay
   const clearAutoplayTimer = useCallback(() => {
@@ -103,25 +108,26 @@ export const CircularTestimonials = ({
   // Fix #1 & #2: Moved these definitions ABOVE the useEffect that uses them
   const handleNext = useCallback(() => {
     clearAutoplayTimer();
-    setActiveIndex((prev) => (prev + 1) % testimonialsLength);
+    setActiveIndex((prev) => {
+      if (testimonialsLength === 0) return 0;
+      return (prev + 1) % testimonialsLength;
+    });
   }, [testimonialsLength, clearAutoplayTimer]);
 
   const handlePrev = useCallback(() => {
     clearAutoplayTimer();
-    setActiveIndex((prev) => (prev - 1 + testimonialsLength) % testimonialsLength);
+    setActiveIndex((prev) => {
+      if (testimonialsLength === 0) return 0;
+      return (prev - 1 + testimonialsLength) % testimonialsLength;
+    });
   }, [testimonialsLength, clearAutoplayTimer]);
-
-  // Reset expanded state when testimonial changes
-  useEffect(() => {
-    setIsExpanded(false);
-  }, [activeIndex]);
 
   // --- Click Outside Logic ---
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (!isExpanded) return;
       if (contentRef.current && !contentRef.current.contains(event.target as Node)) {
-        setIsExpanded(false);
+        setExpandedIndex(null);
       }
     };
 
@@ -133,19 +139,9 @@ export const CircularTestimonials = ({
   }, [isExpanded]);
 
   useEffect(() => {
-    if (testimonialsLength === 0) {
-      setActiveIndex(0);
-      return;
-    }
-    if (activeIndex >= testimonialsLength) {
-      setActiveIndex(0);
-    }
-  }, [activeIndex, testimonialsLength]);
-
-  useEffect(() => {
     if (!activeTestimonial) return;
-    onActiveIndexChange?.(activeIndex);
-  }, [activeIndex, activeTestimonial, onActiveIndexChange]);
+    onActiveIndexChange?.(displayIndex);
+  }, [displayIndex, activeTestimonial, onActiveIndexChange]);
 
   // Responsive gap calculation
   useEffect(() => {
@@ -181,7 +177,7 @@ export const CircularTestimonials = ({
     };
     window.addEventListener("keydown", handleKey);
     return () => window.removeEventListener("keydown", handleKey);
-  }, [handleNext, handlePrev]); // Fix: Dependencies now refer to the stable callbacks defined above
+  }, [handleNext, handlePrev, testimonialsLength]); // Fix: Dependencies now refer to the stable callbacks defined above
 
   // Compute transforms for each image
   function getImageStyle(index: number): React.CSSProperties {
@@ -191,9 +187,9 @@ export const CircularTestimonials = ({
 
     const gap = calculateGap(containerWidth);
     const maxStickUp = gap * 0.8;
-    const isActive = index === activeIndex;
-    const isLeft = (activeIndex - 1 + testimonialsLength) % testimonialsLength === index;
-    const isRight = (activeIndex + 1) % testimonialsLength === index;
+    const isActive = index === displayIndex;
+    const isLeft = (displayIndex - 1 + testimonialsLength) % testimonialsLength === index;
+    const isRight = (displayIndex + 1) % testimonialsLength === index;
 
     if (isActive) {
       return {
@@ -239,10 +235,10 @@ export const CircularTestimonials = ({
 
   // Toggle Read More
   const handleToggleExpand = () => {
-    const newState = !isExpanded;
-    setIsExpanded(newState);
-    
-    if (newState) {
+    const willExpand = expandedIndex !== displayIndex;
+    setExpandedIndex(willExpand ? displayIndex : null);
+
+    if (willExpand) {
       clearAutoplayTimer();
     }
   };
@@ -271,7 +267,7 @@ export const CircularTestimonials = ({
               fill // Replaces absolute positioning logic for size
               sizes="(max-width: 768px) 100vw, 33vw" // Helps Next.js optimize bandwidth
               className={`absolute h-full w-full rounded-3xl object-cover shadow-[0_10px_30px_rgba(0,0,0,0.2)] transition duration-300 ${
-                index === activeIndex
+                index === displayIndex
                   ? "cursor-pointer ring-2 ring-blue-400/60"
                   : "cursor-pointer hover:ring-2 hover:ring-white/30"
               }`}
@@ -280,7 +276,7 @@ export const CircularTestimonials = ({
                 setActiveIndex(index);
                 onTestimonialClick?.(index);
               }}
-              priority={index === activeIndex} // Prioritize loading current image
+              priority={index === displayIndex} // Prioritize loading current image
             />
           ))}
         </div>
@@ -290,7 +286,7 @@ export const CircularTestimonials = ({
           <div className="grow">
             <AnimatePresence mode="wait">
               <motion.div
-                key={activeIndex}
+                key={displayIndex}
                 variants={quoteVariants}
                 initial="initial"
                 animate="animate"
