@@ -189,36 +189,7 @@ export const LeadCaptureForm = ({
                   placeholder="Your full name"
                 />
               </label>
-
-              <label className="space-y-2">
-                <span className="text-sm font-medium text-white/85">
-                  Company Name (Optional)
-                </span>
-                <input
-                  type="text"
-                  value={formData.companyName}
-                  onChange={(event) =>
-                    updateFormData("companyName", event.target.value)
-                  }
-                  className="w-full rounded-[1rem] border border-white/12 bg-black/20 px-4 py-3 text-white outline-none transition placeholder:text-white/30 focus:border-blue-300/40"
-                  placeholder="Your company or organisation"
-                />
-              </label>
-
-              <label className="space-y-2">
-                <span className="text-sm font-medium text-white/85">Email</span>
-                <input
-                  type="email"
-                  value={formData.email}
-                  onChange={(event) =>
-                    updateFormData("email", event.target.value)
-                  }
-                  className="w-full rounded-[1rem] border border-white/12 bg-black/20 px-4 py-3 text-white outline-none transition placeholder:text-white/30 focus:border-blue-300/40"
-                  placeholder="you@example.com"
-                />
-              </label>
-
-              <label className="space-y-2">
+                       <label className="space-y-2">
                 <span className="text-sm font-medium text-white/85">
                   Required Service
                 </span>
@@ -232,8 +203,34 @@ export const LeadCaptureForm = ({
                   placeholder="Describe the service you need"
                 />
               </label>
-
-              <label className={`space-y-2 ${singleColumn ? "" : "sm:col-span-2"}`}>
+               <label className="space-y-2">
+                <span className="text-sm font-medium text-white/85">
+                  Company Name (Optional)
+                </span>
+                <input
+                  type="text"
+                  value={formData.companyName}
+                  onChange={(event) =>
+                    updateFormData("companyName", event.target.value)
+                  }
+                  className="w-full rounded-[1rem] border border-white/12 bg-black/20 px-4 py-3 text-white outline-none transition placeholder:text-white/30 focus:border-blue-300/40"
+                  placeholder="Your company or organisation"
+                />
+              </label>
+      
+     <label className="space-y-2">
+                <span className="text-sm font-medium text-white/85">Email</span>
+                <input
+                  type="email"
+                  value={formData.email}
+                  onChange={(event) =>
+                    updateFormData("email", event.target.value)
+                  }
+                  className="w-full rounded-[1rem] border border-white/12 bg-black/20 px-4 py-3 text-white outline-none transition placeholder:text-white/30 focus:border-blue-300/40"
+                  placeholder="you@example.com"
+                />
+              </label>
+                                        <label className="space-y-2">
                 <span className="text-sm font-medium text-white/85">
                   Mobile Number
                 </span>
@@ -252,6 +249,14 @@ export const LeadCaptureForm = ({
                   placeholder="+447777888999"
                 />
               </label>
+          
+             
+
+
+
+         
+
+              
             </div>
 
             <label className="flex items-start gap-3 rounded-[1rem] border border-white/10 bg-white/[0.04] px-4 py-3">
@@ -267,7 +272,6 @@ export const LeadCaptureForm = ({
                 I agree to {" "}
                 <Link
                   href="/terms"
-                  target="_blank"
                   className="text-blue-300 underline underline-offset-4 hover:text-blue-200"
                 >
                   terms and conditions

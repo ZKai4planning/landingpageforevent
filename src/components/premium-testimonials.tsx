@@ -2,7 +2,7 @@
 
 import { motion, AnimatePresence, Variants  } from 'framer-motion';
 import { useState, useEffect, useRef } from 'react';
-import { Quote, Star, ArrowLeft, ArrowRight, Sparkles } from 'lucide-react';
+import { Quote, ArrowLeft, ArrowRight, Sparkles } from 'lucide-react';
 
 const testimonials = [
   {
@@ -370,18 +370,17 @@ const fadeInUp: Variants = {
                         />
                       </motion.div>
 
-                      <h3 className="text-2xl font-bold text-white mb-2">
+                      <h3 className="mb-2 text-2xl font-bold text-white blur-[5px]">
                         {testimonials[currentIndex].name}
                       </h3>
-                      <p className="text-blue-400 mb-1 font-medium">
+                      <p className="text-blue-400 mb-1 font-medium blur-[5px]">
                         {testimonials[currentIndex].role}
                       </p>
-                      <p className="text-white/50 mb-4">
+                      <p className="mb-4 text-white/50 blur-[5px]">
                         {testimonials[currentIndex].company}
                       </p>
                       
-                      {/* Star Rating - Changed to Slate/Gray */}
-                      <div className="flex justify-center md:justify-start gap-1 mb-6">
+                      {/* <div className="flex justify-center md:justify-start gap-1 mb-6">
                         {[...Array(testimonials[currentIndex].rating)].map((_, i) => (
                           <motion.div
                             key={i}
@@ -392,13 +391,13 @@ const fadeInUp: Variants = {
                             <Star className="w-5 h-5 fill-yellow-400 text-yellow-400" />
                           </motion.div>
                         ))}
-                      </div>
+                      </div> */}
                     </div>
 
                     {/* Content */}
                     <div className="flex-1">
                       <motion.blockquote 
-                        className="text-base sm:text-lg md:text-2xl text-white/80 leading-relaxed mb-6 sm:mb-8 font-light italic"
+                        className="mb-6 text-base italic leading-relaxed text-white/80  sm:mb-8 sm:text-lg md:text-2xl"
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         transition={{ delay: 0.3, duration: 0.8 }}

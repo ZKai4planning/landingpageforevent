@@ -189,7 +189,7 @@ export default function SignupsPage() {
                 </p>
               </div>
 
-              <form onSubmit={handleUnlock} className="space-y-4">
+              <form onSubmit={handleUnlock} className="space-y-6">
                 <label className="space-y-2">
                   <span className="text-sm font-medium text-white/85">
                     Password
@@ -215,7 +215,7 @@ export default function SignupsPage() {
                 <button
                   type="submit"
                   disabled={isLoading}
-                  className="btn-1 relative inline-flex min-w-[12rem] items-center justify-center overflow-hidden rounded-[0.9rem] px-6 py-3 text-sm font-semibold disabled:cursor-not-allowed disabled:opacity-70"
+                  className="btn-1 relative mt-2 inline-flex min-w-[12rem] items-center justify-center overflow-hidden rounded-[0.9rem] px-6 py-3 text-sm font-semibold disabled:cursor-not-allowed disabled:opacity-70"
                 >
                   <span className="relative z-10">
                     {isLoading ? "Checking..." : "Unlock Page"}

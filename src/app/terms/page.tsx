@@ -1,7 +1,27 @@
+"use client";
+
+import { useRouter } from "next/navigation";
+
 export default function TermsPage() {
+  const router = useRouter();
+
   return (
     <main className="min-h-screen bg-[#05070d] px-4 py-16 text-white sm:px-6 sm:py-20">
       <div className="mx-auto max-w-4xl rounded-[2rem] border border-white/10 bg-white/[0.04] p-6 sm:p-8 lg:p-10">
+        <button
+          type="button"
+          onClick={() => {
+            if (window.history.length > 1) {
+              router.back();
+              return;
+            }
+
+            router.push("/");
+          }}
+          className="mb-6 inline-flex items-center rounded-full border border-white/12 bg-white/5 px-4 py-2 text-sm font-semibold text-white transition hover:bg-white/10"
+        >
+          Back
+        </button>
         <p className="text-xs font-semibold uppercase tracking-[0.34em] text-blue-200/75">
           Terms And Conditions
         </p>
@@ -17,13 +37,17 @@ export default function TermsPage() {
           Your submitted details may be stored securely for the purpose of
           responding to your request, arranging follow-up communication, and
           providing services related to planning, renovation, or construction
-          support. In line with GDPR principles, Ai4Planning does not sell your
-          personal data to third parties.
+          support.
         </p>
+   
         <p className="mt-4 text-sm leading-relaxed text-white/75 sm:text-base">
           Ai4Planning reserves the right to update these terms at any time. If
           you do not agree with these terms, please do not submit your personal
           information through the form.
+        </p>
+             <p className="mt-4 text-sm leading-relaxed text-white/75 sm:text-base">
+          In line with GDPR principles, Ai4Planning does not sell your personal
+          data to third parties.
         </p>
       </div>
     </main>
