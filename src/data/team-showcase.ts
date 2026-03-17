@@ -132,7 +132,7 @@ export const teamShowcaseMembers = [
       "Ajay  leads Ai4Planning’s technology vision, with a focus on making the UK planning process simpler and faster for homeowners and developers. He combines deep technical expertise with an understanding of how local authorities operate, building practical AI tools that cut through uncertainty and provide clear answers early in the process. Ajay’s team architects the data backbone of the platform—curating and refreshing vast sets of planning, policy and site‑specific information to power our intelligence layer and Synapsis buttons. By blending real‑world planning insight with modern technology and scalable data infrastructure, he helps clients spot risks before they become delays and turn complex decisions into straightforward, confident choices.",
     name: "Ajay",
     designation: "Partner & Head of Technology",
-    src: "https://images.unsplash.com/photo-1527980965255-d3b416303d12?q=80&w=600&auto=format&fit=crop",
+    src: "/Riyad.png",
     roleSummary:
       "Drives product architecture, AI systems, and data infrastructure powering planning intelligence.",
     focusAreas: [
@@ -150,10 +150,12 @@ export const teamShowcaseMembers = [
   },
   {
     quote:
-      "As the Head of Operations at AI4Planning, I oversee the end-to-end operational framework of the platform, ensuring a seamless and customer-centric experience throughout the planning journey. My role focuses on designing and managing both front-end and back-end operations, enabling homeowners and property developers to navigate the UK planning process with clarity and confidence. I lead the implementation of intelligent workflow systems, including AI-driven agents and the Zynapse operational framework, to streamline customer onboarding, documentation management, and application processing. By integrating technology with structured operational processes, I ensure that every stage of the planning lifecycle—from initial consultation to council submission—is efficient, transparent, and well supported. A key part of my responsibility is maintaining high standards of customer satisfaction (C-SAT), service level adherence (SLA), and operational quality, while continuously refining the customer journey to deliver a responsive and reliable service experience. Through a strong focus on process excellence, customer engagement, and intelligent automation, I work to ensure that AI4Planning delivers a modern, dependable, and highly supportive planning platform for homeowners across the UK.",
+      `Ritesh leads operations and customer engagement at AI4Planning, ensuring every customer experiences a clear, supported, and well-structured planning journey.
+He oversees end-to-end workflows, combining AI-driven processes with the Ai framework to streamline onboarding, documentation, and application handling from initial enquiry through to submission, and final delivery.
+With a strong focus on customer outcomes, Ritesh ensures that every interaction is handled with clarity, responsiveness, and care, giving clients confidence that their planning journey is in capable and reliable hands.`,
     name: "Ritesh",
     designation: "Head of Operations & Customer Engagement",
-    src: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=600&auto=format&fit=crop",
+    src: "/Ritesh.png",
     roleSummary:
       "Manages end-to-end operations, customer workflows, and service delivery across the platform.",
     focusAreas: [
@@ -174,7 +176,7 @@ export const teamShowcaseMembers = [
       "Riyadh leads Ai4Planning’s digital marketing strategy, driving growth by connecting the platform with homeowners, developers, and planning professionals across the UK. He combines data-driven marketing with a strong understanding of user behavior to craft campaigns that clearly communicate complex planning insights in a simple, accessible way. Riyadh oversees brand positioning, performance marketing, and content strategy—ensuring that Ai4Planning reaches the right audience at the right time with meaningful value. By leveraging analytics, automation, and storytelling, he helps build trust, generate demand, and turn awareness into engagement, enabling more users to confidently navigate the planning process.",
     name: "Riyad",
     designation: "Head of Digital Marketing & Sales",
-    src: "https://images.unsplash.com/photo-1544723795-3fb6469f5b39?q=80&w=600&auto=format&fit=crop",
+    src: "/Riyad.png",
     roleSummary:
       "Leads brand growth, digital campaigns, and customer acquisition strategies.",
     focusAreas: [
