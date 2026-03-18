@@ -39,16 +39,17 @@ export default function TermsPage() {
           providing services related to planning, renovation, or construction
           support.
         </p>
+
+        <p className="mt-4 text-sm leading-relaxed text-white/75 sm:text-base">
+          We are GDPR compliant and committed to protecting your privacy. Your personal information is securely stored and will never be shared with any third-party platforms.
+        </p>
    
         <p className="mt-4 text-sm leading-relaxed text-white/75 sm:text-base">
           Ai4Planning reserves the right to update these terms at any time. If
           you do not agree with these terms, please do not submit your personal
           information through the form.
         </p>
-             <p className="mt-4 text-sm leading-relaxed text-white/75 sm:text-base">
-          In line with GDPR principles, Ai4Planning does not sell your personal
-          data to third parties.
-        </p>
+             
       </div>
     </main>
   );

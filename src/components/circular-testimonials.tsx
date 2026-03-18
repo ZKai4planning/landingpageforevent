@@ -8,7 +8,7 @@ import React, {
 } from "react";
 import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
 import { motion, AnimatePresence } from "framer-motion";
-import Image from "next/image"; // Fix #3: Import Next.js Image
+import Image from "next/image"; 
 
 interface Testimonial {
   quote: string;

@@ -149,8 +149,7 @@ export const teamShowcaseMembers = [
     works: [],
   },
   {
-    quote:
-      `Ritesh leads operations and customer engagement at AI4Planning, ensuring every customer experiences a clear, supported, and well-structured planning journey.
+    quote: `Ritesh leads operations and customer engagement at AI4Planning, ensuring every customer experiences a clear, supported, and well-structured planning journey.
 He oversees end-to-end workflows, combining AI-driven processes with the Ai framework to streamline onboarding, documentation, and application handling from initial enquiry through to submission, and final delivery.
 With a strong focus on customer outcomes, Ritesh ensures that every interaction is handled with clarity, responsiveness, and care, giving clients confidence that their planning journey is in capable and reliable hands.`,
     name: "Ritesh",
@@ -173,9 +172,30 @@ With a strong focus on customer outcomes, Ritesh ensures that every interaction 
   },
   {
     quote:
-      "Riyadh leads Ai4Planning’s digital marketing strategy, driving growth by connecting the platform with homeowners, developers, and planning professionals across the UK. He combines data-driven marketing with a strong understanding of user behavior to craft campaigns that clearly communicate complex planning insights in a simple, accessible way. Riyadh oversees brand positioning, performance marketing, and content strategy—ensuring that Ai4Planning reaches the right audience at the right time with meaningful value. By leveraging analytics, automation, and storytelling, he helps build trust, generate demand, and turn awareness into engagement, enabling more users to confidently navigate the planning process.",
-    name: "Riyad",
-    designation: "Head of Digital Marketing & Sales",
+      "Pavan drives the technical execution at Ai4Planning, translating product vision into scalable, high-performance solutions. With a strong foundation in software architecture and system design, he leads the development of robust platforms that support complex planning workflows and data-driven decision making. Pavan works closely with cross-functional teams to ensure seamless integration of AI capabilities, reliable infrastructure, and intuitive user experiences. By emphasizing code quality, performance, and maintainability, he enables the team to deliver consistent value while adapting quickly to evolving requirements. His practical approach and attention to detail help turn ambitious ideas into dependable, real-world applications.",
+    name: "Pavan",
+    designation: "Technical Lead",
+    src: "/Riyad.png",
+    roleSummary:
+      "Leads technical architecture, platform development, and scalable system execution.",
+    focusAreas: [
+      "Software Architecture",
+      "System Design",
+      "AI Integration",
+      "Platform Scalability",
+    ],
+    workStats: [
+      { label: "Focus", value: "Scalable Systems" },
+      { label: "Strength", value: "Architecture & Engineering" },
+      { label: "Goal", value: "Performance & Reliability" },
+    ],
+    works: [],
+  },
+  {
+    quote:
+      "Riyadh is a results‑driven marketing professional with experience delivering high‑impact digital and advertising campaigns for leading UK brands. He specialises in translating complex propositions into clear, compelling customer journeys that drive engagement, lead generation, and commercial impact. Riyadh supports end‑to‑end campaign delivery across hospitality and connectivity products, owning content distribution, landing‑page optimisation, and direct client communications. He works closely with sales, creative, and external partners to define priorities, brief assets, and ensure messaging is consistent, timely, and relevant across channels. With a strong foundation in performance monitoring and ad‑tech platforms, Riyadh applies data‑driven insight to optimise digital journeys, improve delivery accuracy, and maximise campaign effectiveness. His experience spans CRM management, stakeholder engagement, and cross‑functional collaboration, enabling him to bridge commercial objectives with customer needs. Riyadh brings a product‑marketing mindset to his work—supporting product lifecycle communications, shaping value propositions, and helping users understand how products solve real problems. Fluent in Spanish and highly analytical, he thrives in fast‑paced environments where clarity, execution, and continuous improvement are critical to growth.",
+    name: "Riyadh",
+    designation: "Product & Digital Marketing Executive",
     src: "/Riyad.png",
     roleSummary:
       "Leads brand growth, digital campaigns, and customer acquisition strategies.",

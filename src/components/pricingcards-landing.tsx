@@ -79,6 +79,7 @@ export default function PricingCardsLanding() {
       <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 px-4">
         {plans.map((plan) => {
           const isRestricted = restrictedPlans.has(plan.name)
+          const isBronzeComingSoon = plan.name === "Bronze"
 
           return (
             <Card
@@ -105,14 +106,18 @@ export default function PricingCardsLanding() {
                 </p>
 
                 <Button
-                  disabled={isRestricted}
+                  disabled={isRestricted || isBronzeComingSoon}
                   className={`mt-4 w-full rounded-xl ${
                     isRestricted
                       ? "bg-white/20 text-white/60 cursor-not-allowed"
-                      : "bg-white text-black hover:bg-gray-200"
+                      : isBronzeComingSoon
+                        ? "cursor-not-allowed bg-white/70 text-black/80 blur-[1px]"
+                        : "bg-white text-black hover:bg-gray-200"
                   }`}
                 >
-                  {plan.button}
+                  {isBronzeComingSoon
+                    ? "Stay tuned for the full launch!"
+                    : plan.button}
                 </Button>
               </CardHeader>
 
