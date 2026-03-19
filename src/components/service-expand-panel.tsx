@@ -592,21 +592,6 @@ interface ServiceExpandPanelProps {
   disabled?: boolean
 }
 
-/* ================= GRID UTILS ================= */
-
-type GridCell = {
-  active: boolean
-  delay: number
-  duration: number
-}
-
-const generateGrid = (): GridCell[] =>
-  Array.from({ length: 18 }).map(() => ({
-    active: Math.random() > 0.7,
-    delay: Math.random() * 2,
-    duration: 1.4 + Math.random() * 2,
-  }))
-
 const FEATURE_ICON_MAP: Record<string, string> = {
   "non material amendment": "edit_note",
   "advertisement consent": "campaign",
@@ -700,7 +685,7 @@ export default function ServiceExpandPanel({
   const collapsedRailWidth = "clamp(3.5rem, 4vw, 4.5rem)"
   const [showLogin, setShowLogin] = useState(false)
   const panelRef = useRef<HTMLDivElement>(null)
-  const [gridCells, setGridCells] = useState<GridCell[]>(generateGrid())
+  const beamTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null)
   const [selectedFeatureIndex, setSelectedFeatureIndex] = useState(0)
   const [showDetail, setShowDetail] = useState(false)
   const [beamVisible, setBeamVisible] = useState(false)
@@ -719,13 +704,13 @@ export default function ServiceExpandPanel({
   })
   const detailHeadingClass = compactLaptop
     ? "mb-2 text-xl font-bold md:text-2xl"
-    : "mb-2 text-2xl font-bold md:text-3xl"
+    : "mb-2 text-xl font-bold sm:text-2xl md:text-3xl"
   const serviceHeadingClass = compactLaptop
     ? "mb-4 text-xl font-bold md:text-2xl"
-    : "mb-4 text-2xl font-bold md:text-3xl"
+    : "mb-4 text-xl font-bold leading-tight sm:text-2xl md:text-3xl"
   const featureTitleClass = compactLaptop
     ? "text-xs text-white/90 font-semibold"
-    : "text-sm text-white/90 font-semibold"
+    : "text-sm font-semibold leading-snug text-white/90"
 
   const handleSend = () => {
     if (!input.trim()) return
@@ -791,19 +776,43 @@ const handleFormSubmit = () => {
   const selectedFeature =
     service.features[selectedFeatureIndex] ?? service.features[0]
 
-  useEffect(() => {
-    if (isExpanded) {
-      setGridCells(generateGrid())
-    }
-  }, [isExpanded])
+  const clearBeamTimeout = () => {
+    if (!beamTimeoutRef.current) return
+    clearTimeout(beamTimeoutRef.current)
+    beamTimeoutRef.current = null
+  }
 
-  useEffect(() => {
-    if (isExpanded) {
-      setSelectedFeatureIndex(0)
-      setShowDetail(false)
+  const triggerBeam = () => {
+    clearBeamTimeout()
+    setBeamVisible(true)
+    beamTimeoutRef.current = setTimeout(() => {
       setBeamVisible(false)
-    }
-  }, [isExpanded, service.id])
+      beamTimeoutRef.current = null
+    }, beamDurationSeconds * 1000)
+  }
+
+  const resetPanelState = () => {
+    clearBeamTimeout()
+    setSelectedFeatureIndex(0)
+    setShowDetail(false)
+    setBeamVisible(false)
+  }
+
+  const handleExpand = () => {
+    resetPanelState()
+    onExpand()
+  }
+
+  const handleFeatureSelect = (featureIndex: number) => {
+    setSelectedFeatureIndex(featureIndex)
+    triggerBeam()
+  }
+
+  const handleOpenDetail = (featureIndex: number) => {
+    setSelectedFeatureIndex(featureIndex)
+    setShowDetail(true)
+    triggerBeam()
+  }
 
   useEffect(() => {
     if (!isExpanded) return
@@ -822,20 +831,16 @@ const handleFormSubmit = () => {
   }, [isExpanded])
 
   useEffect(() => {
-    if (!showDetail) {
-      setBeamVisible(false)
-      return
+    return () => {
+      if (beamTimeoutRef.current) {
+        clearTimeout(beamTimeoutRef.current)
+      }
     }
-
-    setBeamVisible(true)
-    const timeout = setTimeout(() => {
-      setBeamVisible(false)
-    }, beamDurationSeconds * 1000)
-
-    return () => clearTimeout(timeout)
-  }, [selectedFeatureIndex, showDetail, beamDurationSeconds])
+  }, [])
 
   const handleClose = () => {
+    clearBeamTimeout()
+    setBeamVisible(false)
     if (showDetail) {
       setShowDetail(false)
       return
@@ -877,11 +882,13 @@ const handleFormSubmit = () => {
       >
         {/* ================= MOBILE HEADER ================= */}
         {mobile && isExpanded && (
-          <div className="relative z-20 flex items-center justify-between p-5 border-b border-white/10 md:hidden">
-            <h3 className="font-bold text-lg">{service.title}</h3>
+          <div className="relative z-20 flex items-start justify-between gap-3 border-b border-white/10 px-4 py-4 sm:px-5 md:hidden">
+            <h3 className="min-w-0 flex-1 text-base font-bold leading-tight text-white sm:text-lg">
+              {service.title}
+            </h3>
             <button
               onClick={handleClose}
-              className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-white/10 bg-white/10 text-white/70 transition hover:bg-white/20 hover:text-white"
+              className="inline-flex h-9 w-9 shrink-0 items-center justify-center self-start rounded-full border border-white/10 bg-white/10 text-white/70 transition hover:bg-white/20 hover:text-white"
             >
               <span className="material-symbols-outlined text-lg leading-none">
                 close
@@ -893,7 +900,7 @@ const handleFormSubmit = () => {
         {/* ================= COLLAPSED STATE ================= */}
         {!isExpanded && !mobile && (
           <button
-            onClick={disabled ? undefined : onExpand}
+            onClick={disabled ? undefined : handleExpand}
             disabled={disabled}
             className={`absolute inset-0 flex items-center justify-center ${
               disabled ? "cursor-not-allowed" : "cursor-pointer"
@@ -924,11 +931,28 @@ const handleFormSubmit = () => {
         {/* ================= EXPANDED CONTENT ================= */}
         {isExpanded && (
           <motion.div
-            className={`absolute inset-0 flex h-full w-full flex-col md:flex-row ${mobile ? "pt-16 md:pt-0 z-0" : ""}`}
+            className={`relative flex min-h-0 w-full flex-col md:absolute md:inset-0 md:h-full md:flex-row ${mobile ? "z-0" : ""}`}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.3 }}
           >
+            <div className="relative h-48 w-full overflow-hidden border-b border-white/10 bg-white/5 md:hidden">
+              <Image
+                src={service.image}
+                alt={service.title}
+                fill
+                className="object-cover"
+                priority
+              />
+              <div className="absolute inset-0 bg-blue-900/35" />
+              <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-[#050b18]/95 via-[#050b18]/60 to-transparent" />
+              <div className="absolute inset-x-0 bottom-0 px-4 pb-4">
+                <p className="inline-flex rounded-full bg-blue-500/15 px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.18em] text-blue-200">
+                  {service.label}
+                </p>
+              </div>
+            </div>
+
             {/* ================= LEFT IMAGE ================= */} 
             <div className="hidden h-56 w-full items-center justify-center border-b border-white/10 bg-white/5 md:flex md:h-full md:w-[38%] md:border-b-0 md:border-r lg:w-[30%]">
               <div className="relative w-full h-full overflow-hidden">
@@ -956,7 +980,7 @@ const handleFormSubmit = () => {
             </div>
 
             {/* ================= RIGHT CONTENT ================= */}
-            <div className="relative flex w-full flex-1 flex-col overflow-y-auto bg-white/5 p-5 sm:p-6 md:w-[62%] md:p-8 lg:w-[70%] lg:p-10">
+            <div className="relative flex min-h-0 w-full flex-1 flex-col overflow-y-auto bg-white/5 p-4 sm:p-6 md:w-[62%] md:p-8 lg:w-[70%] lg:p-10">
               <button
                 onClick={handleClose}
                 className={`absolute top-6 right-6 z-20 h-10 w-10 items-center justify-center rounded-full border border-white/10 bg-white/10 text-white/70 transition hover:bg-white/20 hover:text-white ${
@@ -987,7 +1011,7 @@ const handleFormSubmit = () => {
                           <button
                             key={i}
                             type="button"
-                            onClick={() => setSelectedFeatureIndex(i)}
+                            onClick={() => handleFeatureSelect(i)}
                             className={`
                               group relative
                               flex items-center gap-3
@@ -1045,8 +1069,8 @@ const handleFormSubmit = () => {
                             {getFeatureIcon(selectedFeature?.title ?? "")}
                           </span>
                         </div>
-                        <div>
-                          <h3 className={`${compactLaptop ? "text-lg" : "text-xl"} font-bold text-white`}>
+                        <div className="min-w-0 flex-1">
+                          <h3 className={`${compactLaptop ? "text-lg" : "text-lg sm:text-xl"} break-words font-bold text-white`}>
                             {selectedFeature?.title}
                           </h3>
                           <p className={`${compactLaptop ? "text-xs" : "text-sm"} text-blue-300/90`}>
@@ -1123,10 +1147,7 @@ const handleFormSubmit = () => {
                         <button
                           key={i}
                           type="button"
-                          onClick={() => {
-                            setSelectedFeatureIndex(i)
-                            setShowDetail(true)
-                          }}
+                          onClick={() => handleOpenDetail(i)}
                           className="
                             group relative
                             flex items-center gap-3
@@ -1141,7 +1162,7 @@ const handleFormSubmit = () => {
                           <span className="material-symbols-outlined text-blue-300 text-xl">
                             {getFeatureIcon(feature.title)}
                           </span>
-                          <span className={featureTitleClass}>
+                          <span className={`${featureTitleClass} break-words`}>
                             {feature.title}
                           </span>
                         </button>

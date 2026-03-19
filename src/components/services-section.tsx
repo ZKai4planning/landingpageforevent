@@ -386,7 +386,7 @@ export default function ServicesSection() {
                       if (isRestricted) return
                       setExpandedServiceId(service.id)
                     }}
-                    className={`group rounded-2xl border border-white/10 bg-white/5 p-6 text-left backdrop-blur-xl transition-all ${
+                    className={`group flex min-h-full flex-col rounded-2xl border border-white/10 bg-white/5 p-5 text-left backdrop-blur-xl transition-all sm:p-6 ${
                       isRestricted
                         ? "cursor-not-allowed blur-[3px] opacity-55"
                         : "hover:border-blue-400/60 hover:shadow-xl hover:shadow-blue-500/20"
@@ -396,7 +396,7 @@ export default function ServicesSection() {
                       {service.label}
                     </p>
 
-                    <h3 className="mb-3 text-lg font-bold leading-snug">
+                    <h3 className="mb-3 break-words text-base font-bold leading-snug sm:text-lg">
                       {service.subtitle}
                     </h3>
 
@@ -404,7 +404,7 @@ export default function ServicesSection() {
                       &quot;{service.description.substring(0, 90)}...&quot;
                     </p>
 
-                    <span className="relative mt-6 inline-flex items-center gap-1 self-start pt-6 font-semibold text-blue-400">
+                    <span className="relative mt-auto inline-flex items-center gap-1 self-start pt-6 font-semibold text-blue-400">
                       Get Started
                       <span
                         className={`transition-transform duration-300 ${

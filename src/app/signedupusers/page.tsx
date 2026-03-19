@@ -42,6 +42,14 @@ function formatSubmittedAt(value: string) {
   }).format(date);
 }
 
+function ConsentBadge({ consent }: { consent: boolean }) {
+  return (
+    <span className="inline-flex rounded-full border border-emerald-300/20 bg-emerald-400/10 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.2em] text-emerald-100">
+      {consent ? "Consented" : "Pending"}
+    </span>
+  );
+}
+
 export default function SignupsPage() {
   const [password, setPassword] = useState("");
   const [verifiedPassword, setVerifiedPassword] = useState<string | null>(null);
@@ -215,7 +223,7 @@ export default function SignupsPage() {
                 <button
                   type="submit"
                   disabled={isLoading}
-                  className="btn-1 relative mt-2 inline-flex min-w-[12rem] items-center justify-center overflow-hidden rounded-[0.9rem] px-6 py-3 text-sm font-semibold disabled:cursor-not-allowed disabled:opacity-70"
+                  className="btn-1 relative mt-2 inline-flex w-full items-center justify-center overflow-hidden rounded-[0.9rem] px-6 py-3 text-sm font-semibold disabled:cursor-not-allowed disabled:opacity-70 sm:w-auto sm:min-w-[12rem]"
                 >
                   <span className="relative z-10">
                     {isLoading ? "Checking..." : "Unlock Page"}
@@ -244,19 +252,19 @@ export default function SignupsPage() {
                   ) : null}
                 </div>
 
-                <div className="flex flex-wrap gap-3">
+                <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap">
                   <button
                     type="button"
                     onClick={handleRefresh}
                     disabled={isLoading}
-                    className="rounded-full border border-blue-300/30 bg-blue-500/10 px-5 py-2 text-sm font-semibold text-white transition hover:bg-blue-500/20 disabled:cursor-not-allowed disabled:opacity-70"
+                    className="w-full rounded-full border border-blue-300/30 bg-blue-500/10 px-5 py-2 text-sm font-semibold text-white transition hover:bg-blue-500/20 disabled:cursor-not-allowed disabled:opacity-70 sm:w-auto"
                   >
                     {isLoading ? "Refreshing..." : "Refresh"}
                   </button>
                   <button
                     type="button"
                     onClick={handleLock}
-                    className="rounded-full border border-white/12 bg-white/5 px-5 py-2 text-sm font-semibold text-white transition hover:bg-white/10"
+                    className="w-full rounded-full border border-white/12 bg-white/5 px-5 py-2 text-sm font-semibold text-white transition hover:bg-white/10 sm:w-auto"
                   >
                     Lock Page
                   </button>
@@ -275,7 +283,61 @@ export default function SignupsPage() {
                 </div>
               ) : (
                 <>
-                  <div className="mt-8 overflow-x-auto rounded-[1.5rem] border border-white/10 bg-black/20">
+                  <div className="mt-8 space-y-4 md:hidden">
+                    {leads.map((lead) => (
+                      <article
+                        key={`${lead.id ?? lead.email}-${lead.submittedAt}`}
+                        className="rounded-[1.5rem] border border-white/10 bg-black/20 p-5 text-white shadow-[0_16px_40px_rgba(0,0,0,0.2)]"
+                      >
+                        <div className="flex items-start justify-between gap-3">
+                          <div className="min-w-0">
+                            <h2 className="text-base font-semibold text-white">
+                              {lead.name}
+                            </h2>
+                            <p className="mt-1 break-words text-sm text-white/65">
+                              {lead.companyName || "No company provided"}
+                            </p>
+                          </div>
+                          <ConsentBadge consent={lead.consent} />
+                        </div>
+
+                        <dl className="mt-5 space-y-4 text-sm">
+                          <div>
+                            <dt className="text-[11px] font-semibold uppercase tracking-[0.18em] text-white/45">
+                              Email
+                            </dt>
+                            <dd className="mt-1 break-all text-white/85">
+                              {lead.email}
+                            </dd>
+                          </div>
+                          <div>
+                            <dt className="text-[11px] font-semibold uppercase tracking-[0.18em] text-white/45">
+                              Mobile
+                            </dt>
+                            <dd className="mt-1 text-white/85">{lead.mobile}</dd>
+                          </div>
+                          <div>
+                            <dt className="text-[11px] font-semibold uppercase tracking-[0.18em] text-white/45">
+                              Service
+                            </dt>
+                            <dd className="mt-1 break-words text-white/85">
+                              {lead.service}
+                            </dd>
+                          </div>
+                          <div>
+                            <dt className="text-[11px] font-semibold uppercase tracking-[0.18em] text-white/45">
+                              Submitted
+                            </dt>
+                            <dd className="mt-1 text-white/85">
+                              {formatSubmittedAt(lead.submittedAt)}
+                            </dd>
+                          </div>
+                        </dl>
+                      </article>
+                    ))}
+                  </div>
+
+                  <div className="mt-8 hidden overflow-x-auto rounded-[1.5rem] border border-white/10 bg-black/20 md:block">
                     <table className="min-w-full border-collapse text-left text-sm text-white">
                       <thead className="bg-white/5 text-[11px] uppercase tracking-[0.22em] text-white/55">
                         <tr>
@@ -308,9 +370,7 @@ export default function SignupsPage() {
                               {lead.service}
                             </td>
                             <td className="px-4 py-4">
-                              <span className="rounded-full border border-emerald-300/20 bg-emerald-400/10 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.2em] text-emerald-100">
-                                {lead.consent ? "Consented" : "Pending"}
-                              </span>
+                              <ConsentBadge consent={lead.consent} />
                             </td>
                             <td className="px-4 py-4 whitespace-nowrap">
                               {formatSubmittedAt(lead.submittedAt)}
@@ -325,41 +385,45 @@ export default function SignupsPage() {
                       Showing {Math.min((currentPage - 1) * PAGE_SIZE + 1, totalCount)}-
                       {Math.min(currentPage * PAGE_SIZE, totalCount)} of {totalCount}
                     </p>
-                    <div className="flex flex-wrap gap-2">
-                      <button
-                        type="button"
-                        onClick={() => handlePageChange(currentPage - 1)}
-                        disabled={currentPage === 1 || isLoading}
-                        className="rounded-full border border-white/12 bg-white/5 px-4 py-2 text-sm font-semibold text-white transition hover:bg-white/10 disabled:cursor-not-allowed disabled:opacity-50"
-                      >
-                        Previous
-                      </button>
-                      {Array.from(
-                        { length: totalPages },
-                        (_, index) => index + 1
-                      ).map((pageNumber) => (
+                    <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:justify-end">
+                      <div className="grid grid-cols-2 gap-2 sm:flex sm:flex-wrap">
                         <button
-                          key={pageNumber}
                           type="button"
-                          onClick={() => handlePageChange(pageNumber)}
-                          disabled={isLoading}
-                          className={`rounded-full px-4 py-2 text-sm font-semibold transition ${
-                            pageNumber === currentPage
-                              ? "bg-blue-500 text-white"
-                              : "border border-white/12 bg-white/5 text-white hover:bg-white/10"
-                          }`}
+                          onClick={() => handlePageChange(currentPage - 1)}
+                          disabled={currentPage === 1 || isLoading}
+                          className="rounded-full border border-white/12 bg-white/5 px-4 py-2 text-sm font-semibold text-white transition hover:bg-white/10 disabled:cursor-not-allowed disabled:opacity-50"
                         >
-                          {pageNumber}
+                          Previous
                         </button>
-                      ))}
-                      <button
-                        type="button"
-                        onClick={() => handlePageChange(currentPage + 1)}
-                        disabled={currentPage === totalPages || isLoading}
-                        className="rounded-full border border-white/12 bg-white/5 px-4 py-2 text-sm font-semibold text-white transition hover:bg-white/10 disabled:cursor-not-allowed disabled:opacity-50"
-                      >
-                        Next
-                      </button>
+                        <button
+                          type="button"
+                          onClick={() => handlePageChange(currentPage + 1)}
+                          disabled={currentPage === totalPages || isLoading}
+                          className="rounded-full border border-white/12 bg-white/5 px-4 py-2 text-sm font-semibold text-white transition hover:bg-white/10 disabled:cursor-not-allowed disabled:opacity-50"
+                        >
+                          Next
+                        </button>
+                      </div>
+                      <div className="flex flex-wrap gap-2">
+                        {Array.from(
+                          { length: totalPages },
+                          (_, index) => index + 1
+                        ).map((pageNumber) => (
+                          <button
+                            key={pageNumber}
+                            type="button"
+                            onClick={() => handlePageChange(pageNumber)}
+                            disabled={isLoading}
+                            className={`min-w-10 rounded-full px-4 py-2 text-sm font-semibold transition ${
+                              pageNumber === currentPage
+                                ? "bg-blue-500 text-white"
+                                : "border border-white/12 bg-white/5 text-white hover:bg-white/10"
+                            }`}
+                          >
+                            {pageNumber}
+                          </button>
+                        ))}
+                      </div>
                     </div>
                   </div>
                 </>
