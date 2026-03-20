@@ -325,7 +325,7 @@ const fadeInUp: Variants = {
 
         {/* Main Testimonial Display */}
         <div className="relative max-w-6xl mx-auto mb-16">
-          <div className="glass-panel relative min-h-[520px] overflow-hidden rounded-3xl border border-slate-700/30 sm:min-h-[560px] md:h-[400px] md:min-h-[400px]">
+          <div className="glass-panel relative min-h-[720px] overflow-hidden rounded-3xl border border-slate-700/30 sm:min-h-[760px] md:h-[400px] md:min-h-[400px]">
             <motion.div
               className="absolute inset-0 rounded-3xl bg-gradient-to-br from-slate-950/60 via-slate-950/42 to-black/58"
             />
