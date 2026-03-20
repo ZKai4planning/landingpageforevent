@@ -132,7 +132,7 @@ export const teamShowcaseMembers = [
       "Ajay leads Ai4Planning’s technology vision, with a focus on making the UK planning process simpler and faster for homeowners and developers. He combines deep technical expertise with an understanding of how local authorities operate, building practical AI tools that cut through uncertainty and provide clear answers early in the process. Ajay’s team architects the data backbone of the platform—curating and refreshing vast sets of planning, policy and site‑specific information to power our intelligence layer and Synapsis buttons. By blending real‑world planning insight with modern technology and scalable data infrastructure, he helps clients spot risks before they become delays and turn complex decisions into straightforward, confident choices.",
     name: "Ajay",
     designation: "Partner & Head of Technology",
-    src: "/Placeholder.png",
+    src: "/riyad.png",
     roleSummary:
       "Drives product architecture, AI systems, and data infrastructure powering planning intelligence.",
     focusAreas: [
@@ -175,7 +175,7 @@ With a strong focus on customer outcomes, Ritesh ensures that every interaction 
       "Pavan drives the technical execution at Ai4Planning, translating product vision into scalable, high-performance solutions. With a strong foundation in software architecture and system design, he leads the development of robust platforms that support complex planning workflows and data-driven decision making. Pavan works closely with cross-functional teams to ensure seamless integration of AI capabilities, reliable infrastructure, and intuitive user experiences. By emphasizing code quality, performance, and maintainability, he enables the team to deliver consistent value while adapting quickly to evolving requirements. His practical approach and attention to detail help turn ambitious ideas into dependable, real-world applications.",
     name: "Pavan",
     designation: "Technical Lead",
-    src: "/Pavan.png",
+    src: "/pavan.jpg",
     roleSummary:
       "Leads technical architecture, platform development, and scalable system execution.",
     focusAreas: [
