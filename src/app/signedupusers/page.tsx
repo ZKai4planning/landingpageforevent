@@ -106,7 +106,7 @@ export default function SignupsPage() {
       setTotalCount(result.totalCount);
       setTotalPages(result.totalPages);
       setPassword("");
-      toast.success("Access granted. Signup users loaded.");
+      toast.success("Access granted. Signup users have been loaded.");
     } catch (error) {
       setErrorMessage(
         error instanceof Error
@@ -130,7 +130,7 @@ export default function SignupsPage() {
       setCurrentPage(result.currentPage);
       setTotalCount(result.totalCount);
       setTotalPages(result.totalPages);
-      toast.success("Signup users refreshed.");
+      toast.success("Signup users list refreshed.");
     } catch (error) {
       setErrorMessage(
         error instanceof Error

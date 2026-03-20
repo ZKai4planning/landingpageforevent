@@ -255,7 +255,7 @@ export const CircularTestimonials = ({
         
         {/* Images Section */}
         <div
-          className="relative h-64 w-full perspective-[1000px] sm:h-80 md:h-96"
+          className="relative w-full aspect-square max-h-96 perspective-[1000px]"
           ref={imageContainerRef}
         >
           {testimonials.map((testimonial, index) => (
@@ -266,7 +266,7 @@ export const CircularTestimonials = ({
               alt={testimonial.name}
               fill // Replaces absolute positioning logic for size
               sizes="(max-width: 768px) 100vw, 33vw" // Helps Next.js optimize bandwidth
-              className={`absolute h-full w-full rounded-3xl object-cover shadow-[0_10px_30px_rgba(0,0,0,0.2)] transition duration-300 ${
+              className={`absolute rounded-3xl object-cover shadow-[0_10px_30px_rgba(0,0,0,0.2)] transition duration-300 ${
                 index === displayIndex
                   ? "cursor-pointer ring-2 ring-blue-400/60"
                   : "cursor-pointer hover:ring-2 hover:ring-white/30"

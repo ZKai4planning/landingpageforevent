@@ -38,7 +38,7 @@ export default function RootLayout({
       <body className={`${poppins.className} antialiased`}>
         {children}
         <Toaster
-          position="top-right"
+          position="bottom-right"
           toastOptions={{
             duration: 4000,
             style: {
