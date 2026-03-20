@@ -142,6 +142,12 @@ export function CookieConsent() {
 
                 <Button
                   className="h-10 w-full rounded-xl border border-blue-300/50 bg-gradient-to-r from-blue-300 to-blue-400 text-zinc-950 font-semibold shadow-lg shadow-blue-900/20 transition-all duration-200 hover:-translate-y-0.5 hover:from-blue-200 hover:to-blue-300 hover:shadow-blue-900/30 focus-visible:ring-2 focus-visible:ring-blue-300 focus-visible:ring-offset-2 focus-visible:ring-offset-zinc-900"
+                  style={{
+                    color: "#020617",
+                    WebkitTextFillColor: "#020617",
+                    backgroundImage:
+                      "linear-gradient(90deg, rgb(147 197 253), rgb(96 165 250))",
+                  }}
                   onClick={handleAcceptAll}
                 >
                   Accept All
@@ -275,6 +281,12 @@ export function CookieConsent() {
                 </Button>
                 <Button
                   className="h-10 rounded-xl border border-blue-300/50 bg-gradient-to-r from-blue-300 to-blue-400 px-8 text-zinc-950 font-semibold shadow-lg shadow-blue-900/20 transition-all duration-200 hover:-translate-y-0.5 hover:from-blue-200 hover:to-blue-300 hover:shadow-blue-900/30 focus-visible:ring-2 focus-visible:ring-blue-300 focus-visible:ring-offset-2 focus-visible:ring-offset-zinc-900"
+                  style={{
+                    color: "#020617",
+                    WebkitTextFillColor: "#020617",
+                    backgroundImage:
+                      "linear-gradient(90deg, rgb(147 197 253), rgb(96 165 250))",
+                  }}
                   onClick={handleSavePreferences}
                 >
                   Save & Continue

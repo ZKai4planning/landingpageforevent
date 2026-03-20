@@ -87,6 +87,13 @@ export function PremiumTestimonials() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [direction, setDirection] = useState(0);
   const containerRef = useRef<HTMLDivElement>(null);
+  const headingGradientTextStyle = {
+    WebkitBackgroundClip: "text",
+    backgroundClip: "text",
+    WebkitTextFillColor: "transparent",
+    color: "transparent",
+    display: "inline-block",
+  } as const
   const avatarBlurStyle = {
     filter: "blur(8px)",
     WebkitFilter: "blur(8px)",
@@ -282,12 +289,15 @@ const fadeInUp: Variants = {
             className="text-3xl sm:text-5xl md:text-7xl font-bold mb-6 sm:mb-8 tracking-tight"
             variants={fadeInUp}
           >
-            <span className="bg-clip-text text-transparent bg-gradient-to-r from-white to-white/80">
+            <span
+              className="bg-gradient-to-r from-white to-white/80"
+              style={headingGradientTextStyle}
+            >
               Trusted by
             </span>
             <br />
             <motion.span 
-              className="bg-clip-text text-transparent bg-gradient-to-r from-slate-300 via-zinc-200 to-slate-400"
+              className="bg-gradient-to-r from-slate-300 via-zinc-200 to-slate-400"
               animate={{
                 backgroundPosition: ['0% 50%', '100% 50%', '0% 50%'],
               }}
@@ -297,6 +307,7 @@ const fadeInUp: Variants = {
                 ease: "easeInOut"
               }}
               style={{
+                ...headingGradientTextStyle,
                 backgroundSize: '200% 200%'
               }}
             >
