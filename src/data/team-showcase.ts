@@ -132,7 +132,7 @@ export const teamShowcaseMembers = [
       "Ajay leads Ai4Planning’s technology vision, with a focus on making the UK planning process simpler and faster for homeowners and developers. He combines deep technical expertise with an understanding of how local authorities operate, building practical AI tools that cut through uncertainty and provide clear answers early in the process. Ajay’s team architects the data backbone of the platform—curating and refreshing vast sets of planning, policy and site‑specific information to power our intelligence layer and Synapsis buttons. By blending real‑world planning insight with modern technology and scalable data infrastructure, he helps clients spot risks before they become delays and turn complex decisions into straightforward, confident choices.",
     name: "Ajay",
     designation: "Partner & Head of Technology",
-    src: "/riyad.png",
+    src: "/Placeholder.png",
     roleSummary:
       "Drives product architecture, AI systems, and data infrastructure powering planning intelligence.",
     focusAreas: [
@@ -196,7 +196,7 @@ With a strong focus on customer outcomes, Ritesh ensures that every interaction 
       "Riyadh is a results‑driven marketing professional with experience delivering high‑impact digital and advertising campaigns for leading UK brands. He specialises in translating complex propositions into clear, compelling customer journeys that drive engagement, lead generation, and commercial impact. Riyadh supports end‑to‑end campaign delivery across hospitality and connectivity products, owning content distribution, landing‑page optimisation, and direct client communications. He works closely with sales, creative, and external partners to define priorities, brief assets, and ensure messaging is consistent, timely, and relevant across channels. With a strong foundation in performance monitoring and ad‑tech platforms, Riyadh applies data‑driven insight to optimise digital journeys, improve delivery accuracy, and maximise campaign effectiveness. His experience spans CRM management, stakeholder engagement, and cross‑functional collaboration, enabling him to bridge commercial objectives with customer needs. Riyadh brings a product‑marketing mindset to his work—supporting product lifecycle communications, shaping value propositions, and helping users understand how products solve real problems. Fluent in Spanish and highly analytical, he thrives in fast‑paced environments where clarity, execution, and continuous improvement are critical to growth.",
     name: "Riyadh",
     designation: "Product & Digital Marketing Executive",
-    src: "/Riyad1.png",
+    src: "/riyad1.png",
     roleSummary:
       "Leads brand growth, digital campaigns, and customer acquisition strategies.",
     focusAreas: [
