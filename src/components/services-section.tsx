@@ -206,6 +206,7 @@ export default function ServicesSection() {
   const expandedContainerRef = useRef<HTMLDivElement>(null)
   const servicesSectionRef = useRef<HTMLElement>(null)
   const [isWideDesktop, setIsWideDesktop] = useState(false)
+  const [devicePixelRatio, setDevicePixelRatio] = useState(1)
   const [deviceCategory, setDeviceCategory] = useState<
     "mobile" | "tablet" | "smallLaptop" | "laptop" | "desktop" | "wideDesktop"
   >("desktop")
@@ -223,6 +224,20 @@ export default function ServicesSection() {
       : deviceCategory === "smallLaptop" || deviceCategory === "laptop"
         ? "grid grid-cols-3 gap-6"
         : "grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-6"
+  const restrictedBlurPx = Math.max(3, Math.round(3 * devicePixelRatio))
+  const serviceCardBlurStyle = {
+    backdropFilter: "blur(24px)",
+    WebkitBackdropFilter: "blur(24px)",
+  } as const
+  const restrictedServiceCardBlurStyle = {
+    transform: "translateZ(0)",
+    WebkitTransform: "translateZ(0)",
+    willChange: "filter",
+    filter: `blur(${restrictedBlurPx}px)`,
+    WebkitFilter: `blur(${restrictedBlurPx}px)`,
+    backdropFilter: "blur(24px)",
+    WebkitBackdropFilter: "blur(24px)",
+  } as const
 
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
@@ -242,6 +257,34 @@ export default function ServicesSection() {
   }, [expandedServiceId])
 
   const selectedService = services.find((service) => service.id === expandedServiceId)
+
+  useEffect(() => {
+    if (typeof window === "undefined") return
+
+    const updateDevicePixelRatio = () => {
+      setDevicePixelRatio(window.devicePixelRatio || 1)
+    }
+
+    updateDevicePixelRatio()
+
+    const media = window.matchMedia(`(resolution: ${window.devicePixelRatio}dppx)`)
+
+    if (media.addEventListener) {
+      media.addEventListener("change", updateDevicePixelRatio)
+      window.addEventListener("resize", updateDevicePixelRatio)
+      return () => {
+        media.removeEventListener("change", updateDevicePixelRatio)
+        window.removeEventListener("resize", updateDevicePixelRatio)
+      }
+    }
+
+    media.addListener(updateDevicePixelRatio)
+    window.addEventListener("resize", updateDevicePixelRatio)
+    return () => {
+      media.removeListener(updateDevicePixelRatio)
+      window.removeEventListener("resize", updateDevicePixelRatio)
+    }
+  }, [])
 
   useEffect(() => {
     if (typeof window === "undefined") return
@@ -391,6 +434,7 @@ export default function ServicesSection() {
                         ? "cursor-not-allowed blur-[3px] opacity-55"
                         : "hover:border-blue-400/60 hover:shadow-xl hover:shadow-blue-500/20"
                     }`}
+                    style={isRestricted ? restrictedServiceCardBlurStyle : serviceCardBlurStyle}
                   >
                     <p className="mb-2 text-xs font-bold text-blue-400">
                       {service.label}
@@ -469,6 +513,7 @@ export default function ServicesSection() {
                     ? "cursor-not-allowed blur-[3px] opacity-55"
                     : "cursor-pointer hover:border-blue-400/60 hover:shadow-xl hover:shadow-blue-500/20"
                 }`}
+                style={isRestricted ? restrictedServiceCardBlurStyle : serviceCardBlurStyle}
               >
                 <div>
                   <p className="text-xs font-bold text-blue-400 mb-2">

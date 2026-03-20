@@ -229,6 +229,68 @@
     border: 1px solid rgba(19, 91, 236, 0.2);
   }
 
+  .glass-header {
+    background-color: rgb(5 11 24 / 72%);
+    -webkit-backdrop-filter: blur(12px);
+    backdrop-filter: blur(12px);
+    -webkit-transform: translateZ(0);
+    transform: translateZ(0);
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+    background-clip: padding-box;
+    will-change: backdrop-filter;
+  }
+
+  .glass-panel {
+    background: linear-gradient(
+      135deg,
+      rgb(15 23 42 / 30%),
+      rgb(2 6 23 / 18%),
+      rgb(9 9 11 / 28%)
+    );
+    -webkit-backdrop-filter: blur(24px) saturate(140%);
+    backdrop-filter: blur(24px) saturate(140%);
+    isolation: isolate;
+    -webkit-transform: translateZ(0);
+    transform: translateZ(0);
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+    background-clip: padding-box;
+    will-change: transform, backdrop-filter;
+  }
+
+  .glass-chip {
+    background-color: rgb(255 255 255 / 6%);
+    -webkit-backdrop-filter: blur(14px) saturate(130%);
+    backdrop-filter: blur(14px) saturate(130%);
+    isolation: isolate;
+    -webkit-transform: translateZ(0);
+    transform: translateZ(0);
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+    background-clip: padding-box;
+    will-change: backdrop-filter;
+  }
+
+  @supports not ((-webkit-backdrop-filter: blur(0)) or (backdrop-filter: blur(0))) {
+    .glass-header {
+      background-color: rgb(5 11 24 / 94%);
+    }
+
+    .glass-panel {
+      background: linear-gradient(
+        135deg,
+        rgb(15 23 42 / 86%),
+        rgb(2 6 23 / 82%),
+        rgb(9 9 11 / 86%)
+      );
+    }
+
+    .glass-chip {
+      background-color: rgb(255 255 255 / 12%);
+    }
+  }
+
   .service-transition {
     @apply transition-all duration-500 ease-out;
   }

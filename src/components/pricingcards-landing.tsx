@@ -63,6 +63,14 @@ const plans = [
 
 export default function PricingCardsLanding() {
   const restrictedPlans = new Set(["Silver", "Gold", "Platinum"])
+  const restrictedCardBlurStyle = {
+    filter: "blur(3px)",
+    WebkitFilter: "blur(3px)",
+  } as const
+  const disabledButtonBlurStyle = {
+    filter: "blur(1px)",
+    WebkitFilter: "blur(1px)",
+  } as const
 
   return (
     <section className="bg-[#050B18] text-white py-16 ">
@@ -89,6 +97,7 @@ export default function PricingCardsLanding() {
                   ? "bg-[#0B1224]/60 text-white/70 border-white/10 blur-[3px] opacity-65"
                   : "bg-[#0B1224] text-white border-blue-500/40"
               }`}
+              style={isRestricted ? restrictedCardBlurStyle : undefined}
             >
               {plan.badge && (
                 <div className="absolute top-4 right-4 bg-zinc-800 text-white text-xs px-2 py-1 rounded-full">
@@ -114,6 +123,7 @@ export default function PricingCardsLanding() {
                         ? "cursor-not-allowed bg-white/70 text-black/80 blur-[1px]"
                         : "bg-white text-black hover:bg-gray-200"
                   }`}
+                  style={isBronzeComingSoon ? disabledButtonBlurStyle : undefined}
                 >
                   {isBronzeComingSoon
                     ? "Stay tuned for the full launch!"
