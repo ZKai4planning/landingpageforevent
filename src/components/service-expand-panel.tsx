@@ -624,7 +624,7 @@ const FEATURE_ICON_MAP: Record<string, string> = {
   "post-consent design & build": "construction",
   "integrated planning & construction": "engineering",
   "construction management support": "handyman",
-  "programme & delivery coordination": "event",
+  "project & delivery coordination": "event",
   
   "curated consultant marketplace": "storefront",
   "task-based consultancy services": "task",
