@@ -25,7 +25,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${poppins.variable} light`}
+      className={`${poppins.variable} dark`}
       suppressHydrationWarning
     >
       <head>
