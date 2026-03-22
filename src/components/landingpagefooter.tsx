@@ -6,6 +6,8 @@ import Image from "next/image"
 
 const WHATSAPP_URL =
   "https://wa.me/447777788885?text=Hello%21%20I%20have%20a%20query."
+const MAPS_URL =
+  "https://www.google.com/maps/search/?api=1&query=34+Milligan+Street,+London+E14+8AU"
 
 export default function Footer() {
   return (
@@ -62,7 +64,12 @@ export default function Footer() {
             <ul className="space-y-4 text-sm text-white/70">
               <li className="flex items-center justify-center gap-3 md:justify-start">
                 <Mail className="h-4 w-4 text-indigo-400" />
-                <span>info@ai4planning.com</span>
+                <a
+                  href="mailto:info@ai4planning.com"
+                  className="hover:text-white"
+                >
+                  info@ai4planning.com
+                </a>
               </li>
               <li className="flex items-center justify-center gap-3 md:justify-start">
                 <Phone className="h-4 w-4 text-indigo-400" />
@@ -76,7 +83,13 @@ export default function Footer() {
               </li>
               <li className="flex items-start justify-center gap-3 md:justify-start">
                 <MapPin className="mt-0.5 h-4 w-4 text-indigo-400" />
-                <span>34 Milligan Street, London E14 8AU</span>
+                <Link
+                  href={MAPS_URL}
+                  target="_blank"
+                  className="hover:text-white"
+                >
+                  34 Milligan Street, London E14 8AU
+                </Link>
               </li>
             </ul>
           </div>
