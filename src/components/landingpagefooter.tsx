@@ -98,7 +98,12 @@ export default function Footer() {
         <div className="my-10 border-t border-white/10" />
 
         <div className="flex flex-col items-center justify-between gap-4 text-center text-sm text-white/60 md:flex-row md:gap-6 md:text-left">
-          <p>Copyright {new Date().getFullYear()} AI4Planning. All rights reserved.</p>
+          <p>
+            &copy; {new Date().getFullYear()} AI4Planning. All rights reserved. Company number:{" "}
+            <span className="bg-white/10 text-white px-2 py-0.5 rounded font-medium">
+              17123034
+            </span>.
+          </p>
 
           {/* <div className="flex flex-wrap items-center justify-center md:justify-end gap-4 sm:gap-6">
             <Link href="/cookie" className="hover:text-white">
